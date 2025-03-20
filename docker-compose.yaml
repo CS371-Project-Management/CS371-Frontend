@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  cs371-frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    image: cs371-frontend:latest
