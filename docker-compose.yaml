@@ -1,12 +1,14 @@
-version: "3.5"
 services:
   cs371-frontend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
+    restart: always
     volumes:
       - .:/app
       - /app/node_modules
-    image: cs371-frontend:latest
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
