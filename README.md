@@ -1,4 +1,8 @@
 ## Getting Started
+first
+```bash
+npmrun
+```
 build image
 ```bash
 docker compose build
