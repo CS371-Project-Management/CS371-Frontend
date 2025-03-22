@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Menu, Search } from "lucide-react";
 import Image from 'next/image';
-import ModalProfile from "./modal/Profile";
+import ModalProfile from "./modals/Profile";
 
 export default function Navbar() {
     const [isModalOpen, setIsModalOpen] = useState(false);

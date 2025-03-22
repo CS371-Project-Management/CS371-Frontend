@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Home, Plus, Book, Pencil } from 'lucide-react';
-import ModalClassroomPin from './modal/ClassroomPin';
+import ModalClassroomPin from './modals/ClassroomPin';
 
 const menuItems = [
     { name: 'Home', icon: Home, path: '/user/home' },

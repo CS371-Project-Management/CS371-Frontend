@@ -1,6 +1,6 @@
 'use client';
 
-import ForSureClassroom from '@/components/modal/ForSureClassroom';
+import ForSureClassroom from '@/components/modals/ForSureClassroom';
 import NavbarClassroom from '@/components/NavbarClassroom';
 import Image from 'next/image';
 import { useState } from 'react';
