@@ -1,7 +1,7 @@
 "use client";
 
-import Congratulation from "@/components/modals/Congratulation";
-import Warning from "@/components/modals/Warning";
+import ModalCongratulation from "@/components/modals/Congratulation";
+import ModalWarning from "@/components/modals/Warning";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -39,15 +39,15 @@ export default function LessonPage() {
                 </button>
             </div>
 
-            <Warning
+            <ModalWarning
                 isOpen={isWarningModalOpen}
                 onClose={() => {setIsWarningModalOpen(false)}}>
-            </Warning>
+            </ModalWarning>
 
-            <Congratulation
+            <ModalCongratulation
                 isOpen={isCongratModalOpen}
                 onClose={() => {setIsCongratModalOpen(false)}}>
-            </Congratulation>
+            </ModalCongratulation>
         </div>
     );
 }

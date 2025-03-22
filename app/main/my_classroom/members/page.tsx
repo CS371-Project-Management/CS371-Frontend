@@ -1,7 +1,9 @@
 'use client';
 
+import ModalDeleteUser from '@/components/modals/DeleteUser';
 import NavbarClassroom from '@/components/NavbarClassroom';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const members = [
     {
@@ -31,6 +33,8 @@ const members = [
 ]
 
 export default function MemberPage() {
+    const [isDeleteUser, setIsDeleteUser] = useState(false);
+
     return (
         <div className="min-h-screen bg-white">
             <NavbarClassroom></NavbarClassroom>   
@@ -56,15 +60,20 @@ export default function MemberPage() {
                             </div>
 
                             {/* <STAFF></STAFF> */}
-                            {/* <button 
+                            <button 
                                 className="mr-12 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                                onClick={() => {}}>
+                                onClick={() => {setIsDeleteUser(true)}}>
                                 Delete
-                            </button> */}
+                            </button>
                         </div>
                     </div>
                 ))}
             </div>
+
+                <ModalDeleteUser
+                    isOpen={isDeleteUser}
+                    onClose={() => {setIsDeleteUser(false)}}>
+                </ModalDeleteUser>
         </div>
     );
 }

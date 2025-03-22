@@ -3,7 +3,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-export default function ModalCongratulation({ isOpen, onClose }: ModalProps) {
+export default function ModalLeaveClassroom({ isOpen, onClose }: ModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -16,14 +16,17 @@ export default function ModalCongratulation({ isOpen, onClose }: ModalProps) {
                     ✕
                 </button>
 
-                <p className="text-lg font-bold">Congratulation!!!</p>
-                <p className="text-md">You have completed this lesson.</p>
+                <p className="text-lg font-bold">Do you want to Leave this classroom?</p>
                 
-                <div className="flex justify-center mt-5">
+                <div className="flex justify-around mt-5">
+                    <button className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                        onClick={onClose}>
+                        Cancel
+                    </button>
 
                     <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                         onClick={() => {}}>
-                        Continue
+                        Yes
                     </button>
                 </div>
             </div>

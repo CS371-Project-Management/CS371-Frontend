@@ -1,13 +1,17 @@
 'use client';
 
-import ForSureClassroom from '@/components/modals/ForSureClassroom';
+import ModalDeleteClassroom from '@/components/modals/DeleteClassroom';
+import ModalEditClassroom from '@/components/modals/EditClassroom';
+import ModalLeaveClassroom from '@/components/modals/LeaveClassroom';
 import NavbarClassroom from '@/components/NavbarClassroom';
 import Image from 'next/image';
 import { useState } from 'react';
 
 export default function ClassroomPage() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPrivate, setIsPrivate] = useState(false);
+    const [isLeaveClassroom, setIsLeaveClassroom] = useState(false);
+    const [isEditClassroom, setIsEditClassroom] = useState(false);
+    const [isDeleteClassroom, setIsDeleteClassroom] = useState(false);
 
     return (
         <div className="min-h-screen bg-white">
@@ -27,7 +31,7 @@ export default function ClassroomPage() {
                         {/* <USER></USER> */}
                         <button 
                             className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => setIsModalOpen(true)}>
+                            onClick={() => setIsLeaveClassroom(true)}>
                             Leave
                         </button>
 
@@ -49,7 +53,7 @@ export default function ClassroomPage() {
                     
                         <button 
                             className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => {}}>
+                            onClick={() => {setIsEditClassroom(true)}}>
                             Edit
                         </button>
 
@@ -78,10 +82,20 @@ export default function ClassroomPage() {
                 </div>
             </div>
 
-            <ForSureClassroom
-                isOpen={isModalOpen}
-                onClose={() => {setIsModalOpen(false)}}>
-            </ForSureClassroom>
+            <ModalLeaveClassroom
+                isOpen={isLeaveClassroom}
+                onClose={() => {setIsLeaveClassroom(false)}}>
+            </ModalLeaveClassroom>
+
+            <ModalEditClassroom
+                isOpen={isEditClassroom}
+                onClose={() => {setIsEditClassroom(false)}}>
+            </ModalEditClassroom>
+
+            <ModalDeleteClassroom
+                isOpen={isDeleteClassroom}
+                onClose={() => {setIsDeleteClassroom(false)}}>
+            </ModalDeleteClassroom>
         </div>
     );
 }

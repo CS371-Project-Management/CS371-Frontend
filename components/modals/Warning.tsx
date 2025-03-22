@@ -3,7 +3,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-export default function Warning({ isOpen, onClose }: ModalProps) {
+export default function ModalWarning({ isOpen, onClose }: ModalProps) {
     if (!isOpen) return null;
 
     return (
