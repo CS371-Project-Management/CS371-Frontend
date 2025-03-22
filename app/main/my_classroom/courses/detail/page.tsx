@@ -22,7 +22,10 @@ export default function DetailPage() {
         <div className="p-6 max-w-4xl mx-auto">
             <Link href="/main/my_classroom/courses">
                 <div className="flex items-center text-lg font-semibold cursor-pointer hover:opacity-80">
-                    <span className="mr-2 w-8 border border-2 border-bg-black rounded-full">←</span> Back to Courses List
+                    <div className="flex justify-center mr-2 w-8 border border-2 border-bg-black rounded-full">
+                        ⬅
+                    </div>  
+                    Back to Courses List
                 </div>
             </Link>
 
@@ -89,11 +92,11 @@ export default function DetailPage() {
                             Edit
                         </button>
 
-                        <button 
-                            className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => {}}>
-                            Insight
-                        </button>
+                        <Link href={"/main/my_classroom/courses/detail/leaderboard"}>
+                            <button className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+                                Insight
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 ))}

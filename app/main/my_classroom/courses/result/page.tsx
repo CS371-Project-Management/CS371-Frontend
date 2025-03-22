@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const questions = [
@@ -56,10 +57,14 @@ export default function ResultPage() {
     return (
         <div className="max-w-2xl mx-auto p-4">
             <div className="flex items-center justify-between mb-4">
-                <button className="flex items-center text-lg font-bold text-gray-700">
-                    <p className="mr-2 w-8 border border-2 border-bg-black rounded-full">←</p>
+            <Link href="/main/my_classroom/courses">
+                <div className="flex items-center text-lg font-semibold cursor-pointer hover:opacity-80">
+                    <div className="flex justify-center mr-2 w-8 border border-2 border-bg-black rounded-full">
+                        ⬅
+                    </div>   
                     Back to Course
-                </button>
+                </div>
+            </Link>
 
                 <div className="flex items-center space-x-4">
                     <span className="text-gray-700 font-semibold">Questions ({questions.length})</span>
