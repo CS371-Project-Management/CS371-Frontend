@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Home, Plus, Book, Pencil } from 'lucide-react';
 import ModalClassroomPin from './modals/ClassroomPin';
+import Link from 'next/link';
 
 const menuItems = [
     { name: 'Home', icon: Home, path: '/user/home' },
@@ -25,9 +26,10 @@ export default function Sidebar() {
                 onMouseEnter={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
             >
-                {menuItems.map(({ name, icon: Icon}) => (
-                <div
+                {menuItems.map(({ name, icon: Icon, path}) => (
+                <Link
                     key={name}
+                    href={path}
                     onClick={() => name === 'Join Classroom' && setIsModalOpen(true)}
                     className="flex items-center p-3 hover:bg-gray-700 rounded-lg cursor-pointer relative"
                 >
@@ -39,7 +41,7 @@ export default function Sidebar() {
                     >
                     {name}
                     </span>
-                </div>
+                </Link>
                 ))}
             </motion.div>
 
