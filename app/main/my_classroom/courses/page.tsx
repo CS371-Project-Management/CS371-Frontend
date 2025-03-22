@@ -2,8 +2,10 @@
 
 import Card from '@/components/Card';
 import NavbarClassroom from '@/components/modals/classroom/Navbar';
+import ModalCreateCourse from '@/components/modals/course/Create';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const courses = [
     {
@@ -37,6 +39,8 @@ const courses = [
 ];
 
 export default function CoursePage() {
+    const [isCreateCourse, setIsCreateCourse] = useState(false);
+    
     return (
         <div className="min-h-screen bg-white">
             <NavbarClassroom></NavbarClassroom>   
@@ -46,9 +50,9 @@ export default function CoursePage() {
 
                 {/* <STAFF></STAFF> */}
                 {/* <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
-                    onClick={() => {}}>
+                    onClick={() => {setIsCreateCourse(true)}}>
                     Create New Course
-                </button> */}
+                </button>    */}
             </div>
 
             <div className="flex flex-wrap gap-6 ml-25">
@@ -59,8 +63,12 @@ export default function CoursePage() {
                         </div>
                     </Link>
                 ))}
-            </div>
+            </div>  
 
+            <ModalCreateCourse
+                isOpen={isCreateCourse}
+                onClose={() => {setIsCreateCourse(false)}}>
+            </ModalCreateCourse>
         </div>
     );
 }
