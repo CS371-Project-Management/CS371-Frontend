@@ -51,10 +51,11 @@ export default function CoursePage() {
             <div className='flex justify-between ml-20 mt-20 mr-20 mb-15 '>
                 <h2 className="text-3xl font-bold">All Courses</h2>
 
-                <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
+                {/* <STAFF></STAFF> */}
+                {/* <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
                     onClick={() => {}}>
                     Create New Course
-                </button>
+                </button> */}
             </div>
 
             <div className="flex flex-wrap gap-6 ml-25">

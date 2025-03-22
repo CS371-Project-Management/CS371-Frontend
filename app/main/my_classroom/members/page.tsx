@@ -42,16 +42,25 @@ export default function MemberPage() {
             <div className='flex flex-wrap flex-col gap-6 mx-25'>
                 {members.map((member, index) => (
                     <div key={index}>
-                        <div className='flex bg-gray-100 max-w-full gap-10 rounded-full shadow-lg border border-[rgba(0,0,0,0.1)]'>
-                            <Image 
-                                src={member.profile}
-                                alt="image"
-                                width={100}
-                                height={20}
-                                className='p-4 rounded-full'
-                            />
+                        <div className='flex justify-between items-center bg-gray-100 max-w-full rounded-full shadow-lg border border-[rgba(0,0,0,0.1)]'>
+                            <div className='flex gap-10'>
+                                <Image 
+                                    src={member.profile}
+                                    alt="image"
+                                    width={100}
+                                    height={20}
+                                    className='p-4 rounded-full'
+                                />
 
-                            <p className='flex items-center '>{member.username}</p>
+                                <p className='flex items-center '>{member.username}</p>
+                            </div>
+
+                            {/* <STAFF></STAFF> */}
+                            {/* <button 
+                                className="mr-12 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                                onClick={() => {}}>
+                                Delete
+                            </button> */}
                         </div>
                     </div>
                 ))}
