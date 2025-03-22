@@ -8,7 +8,7 @@ export default function QuestionPage() {
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
-            <Link href="/courses">
+            <Link href="/main/my_classroom/courses">
                 <div className="flex items-center text-lg font-semibold cursor-pointer hover:opacity-80">
                 <span className="mr-2 w-8 border border-2 border-bg-black rounded-full">←</span> Lesson 1
                 </div>

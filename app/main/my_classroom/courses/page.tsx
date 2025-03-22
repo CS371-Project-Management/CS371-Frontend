@@ -1,7 +1,7 @@
 'use client';
 
 import Card from '@/components/Card';
-import NavbarClassroom from '@/components/NavbarClassroom';
+import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import Link from 'next/link';
 
@@ -11,35 +11,28 @@ const courses = [
         description: 'เรียนออกแบบ UX/UI ตั้งแต่พื้นฐานจนถึงขั้นสูง',
         image: '/images/image.jpg',
         icon: <Palette size={24} />,
-        path: '/main/my_classroom/courses/lessons'
+        path: '/main/my_classroom/courses/detail'
     },
     {
         title: 'Data Analytics with Python',
         description: 'วิเคราะห์ข้อมูลด้วย Python และเครื่องมือต่าง ๆ',
         image: '/images/image.jpg',
         icon: <Database size={24} />,
-        path: '/main/my_classroom/courses/lessons'
+        path: '/main/my_classroom/courses/lesson'
     },
     {
         title: 'Fundamental Web Dev',
         description: 'HTML5 และ CSS3 สำหรับมือใหม่',
         image: '/images/image.jpg',
         icon: <Code size={24} />,
-        path: '/main/my_classroom/courses/lessons'
+        path: '/main/my_classroom/courses/question'
     },
     {
         title: 'Introduction to JavaScript',
         description: 'พื้นฐานการเขียนโปรแกรมด้วย JavaScript',
         image: '/images/image.jpg',
         icon: <Code size={24} />,
-        path: '/main/my_classroom/courses/lessons'
-    },
-    {
-        title: 'Web App Development with Node.js',
-        description: 'เรียนรู้ Node.js และ Express',
-        image: '/images/image.jpg',
-        icon: <BookOpen size={24} />,
-        path: '/main/my_classroom/courses/lessons'
+        path: '/main/my_classroom/courses/result'
     },
 ];
 

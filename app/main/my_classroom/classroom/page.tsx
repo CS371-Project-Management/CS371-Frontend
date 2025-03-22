@@ -1,9 +1,9 @@
 'use client';
 
-import ModalDeleteClassroom from '@/components/modals/DeleteClassroom';
-import ModalEditClassroom from '@/components/modals/EditClassroom';
-import ModalLeaveClassroom from '@/components/modals/LeaveClassroom';
-import NavbarClassroom from '@/components/NavbarClassroom';
+import ModalDeleteClassroom from '@/components/modals/classroom/Delete';
+import ModalEditClassroom from '@/components/modals/classroom/Edit';
+import ModalLeaveClassroom from '@/components/modals/classroom/Leave';
+import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -59,7 +59,7 @@ export default function ClassroomPage() {
 
                         <button 
                             className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => {}}>
+                            onClick={() => {setIsDeleteClassroom(true)}}>
                             Delete
                         </button> */}
                     </div>

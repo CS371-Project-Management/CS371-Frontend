@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/components/Card";
-import ModalCreateClassroom from "@/components/modals/CreateClassroom";
+import ModalCreateClassroom from "@/components/modals/classroom/Create";
 import { BookOpen, Code, Database, Palette } from "lucide-react";
 import { useState } from "react";
 

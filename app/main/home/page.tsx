@@ -5,7 +5,7 @@ import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import { useState } from 'react';
 import { Course } from '@/interfaces/course';
 import Card from '@/components/Card';
-import ModalJoinClassroom from '@/components/modals/JoinClassroom';
+import ModalJoinClassroom from '@/components/modals/classroom/Join';
  
 const courses = [
     {

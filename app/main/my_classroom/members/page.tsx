@@ -1,7 +1,7 @@
 'use client';
 
-import ModalDeleteUser from '@/components/modals/DeleteUser';
-import NavbarClassroom from '@/components/NavbarClassroom';
+import ModalDeleteUser from '@/components/modals/user/DeleteUser';
+import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import Image from 'next/image';
 import { useState } from 'react';
 
