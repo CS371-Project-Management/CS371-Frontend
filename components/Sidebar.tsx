@@ -7,10 +7,10 @@ import ModalClassroomPin from './modals/ClassroomPin';
 import Link from 'next/link';
 
 const menuItems = [
-    { name: 'Home', icon: Home, path: '/user/home' },
+    { name: 'Home', icon: Home, path: '/main/home' },
     { name: 'Join Classroom', icon: Plus, path: '#' },
-    { name: 'My Classroom', icon: Book, path: '/user/my_classroom' },
-    { name: 'My Created Classroom', icon: Pencil, path: '/user/my_created_classroom' },
+    { name: 'My Classroom', icon: Book, path: '/main/my_classroom' },
+    { name: 'My Created Classroom', icon: Pencil, path: '/main/my_created_classroom' },
 ];
 
 export default function Sidebar() {
