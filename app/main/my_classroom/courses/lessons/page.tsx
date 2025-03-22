@@ -1,7 +1,7 @@
 "use client";
 
-import Congratulation from "@/components/modals/Congratulation";
-import Warning from "@/components/modals/Warning";
+import ModalCongratulation from "@/components/modals/lesson/Congratulation";
+import ModalWarning from "@/components/modals/lesson/Warning";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ export default function LessonPage() {
 
     return (
         <div className="p-6 max-w-3xl mx-auto">
-            <Link href="/courses">
+            <Link href="/main/my_classroom/courses">
                 <div className="flex items-center text-lg font-semibold cursor-pointer hover:opacity-80">
                     <span className="mr-2 w-8 border border-2 border-bg-black rounded-full">←</span> Lesson 1
                 </div>
@@ -39,15 +39,15 @@ export default function LessonPage() {
                 </button>
             </div>
 
-            <Warning
+            <ModalWarning
                 isOpen={isWarningModalOpen}
                 onClose={() => {setIsWarningModalOpen(false)}}>
-            </Warning>
+            </ModalWarning>
 
-            <Congratulation
+            <ModalCongratulation
                 isOpen={isCongratModalOpen}
                 onClose={() => {setIsCongratModalOpen(false)}}>
-            </Congratulation>
+            </ModalCongratulation>
         </div>
     );
 }

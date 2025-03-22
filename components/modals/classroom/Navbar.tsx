@@ -4,9 +4,9 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const navLinks = [
-    { name: 'Classroom', href: '/user/my_classroom/classroom' },
-    { name: 'Courses', href: '/user/my_classroom/courses' },
-    { name: 'Members', href: '/user/my_classroom/members' },
+    { name: 'Classroom', href: '/main/my_classroom/classroom' },
+    { name: 'Courses', href: '/main/my_classroom/courses' },
+    { name: 'Members', href: '/main/my_classroom/members' },
 ];
 
 export default function NavbarClassroom() {
