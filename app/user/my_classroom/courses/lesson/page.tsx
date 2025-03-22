@@ -1,7 +1,7 @@
 "use client";
 
-import Congratulation from "@/components/Modal/Congratulation";
-import Warning from "@/components/Modal/Warning";
+import Congratulation from "@/components/modal/Congratulation";
+import Warning from "@/components/modal/Warning";
 import Link from "next/link";
 import { useState } from "react";
 
