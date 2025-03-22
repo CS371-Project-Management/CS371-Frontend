@@ -46,7 +46,7 @@ export default function MyCreatedClassroomPage() {
             <div className="flex justify-between">
                 <h2 className="text-2xl font-bold mb-15">My Created Classroom</h2>
 
-                <button className="bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
+                <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
                     onClick={() => {setIsModalOpen(true)}}>
                     Create New Classroom
                 </button>

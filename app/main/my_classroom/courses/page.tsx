@@ -48,12 +48,12 @@ export default function CoursePage() {
         <div className="min-h-screen bg-white">
             <NavbarClassroom></NavbarClassroom>   
 
-            <div className='flex flex-between ml-20 mt-20 mb-15 text-3xl font-bold'>
-                <h2 className="text-2xl font-bold mb-15">My Created Classroom</h2>
+            <div className='flex justify-between ml-20 mt-20 mr-20 mb-15 '>
+                <h2 className="text-3xl font-bold">All Courses</h2>
 
-                <button className="bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
+                <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
                     onClick={() => {}}>
-                    Create New Classroom
+                    Create New Course
                 </button>
             </div>
 
