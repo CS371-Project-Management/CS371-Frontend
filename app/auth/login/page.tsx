@@ -1,6 +1,9 @@
 'use client';
 
 import ModalReportFail from '@/components/modals/report/ReportFail';
+import { User } from '@/models/User';
+import { UserService } from '@/services/userService';
+import { UserTypesLogin, UserTypesResponse } from '@/types/userTypes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,21 +12,39 @@ export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const router = useRouter();
     const [isFailed, setIsFailed] = useState(false);
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
+    const router = useRouter();
 
-        if (username === 'admin' && password === 'password') {
-            router.push('/main/home');
-        } else {
-            setIsFailed(true)
-            setError('Invalid username or password.');
-        }
-    };
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(event.target.value);
+      };
     
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+    };
+
+    async function handleSignIn() {
+        let userLogin: UserTypesLogin = {
+          username: username,
+          password: password,
+        };
+      
+        try {
+          const res = await UserService.login(userLogin);
+          localStorage.setItem('token', res.token);
+
+            localStorage.setItem('user', JSON.stringify(res.user_id));
+            const storedUser = localStorage.getItem('user');
+          router.push("/main/home");
+      
+        } catch (err: any) {
+          console.log('Login Error:', err);
+          alert('Login failed: ' + JSON.stringify(err.response?.data || err.message));
+        }
+      }
+      
+
     return (
         <div className="flex h-screen">
             <div className="w-full flex flex-col justify-center items-center p-10 bg-white text-black">
@@ -41,7 +62,10 @@ export default function LoginPage() {
                     <hr className="flex-grow border-gray-300" />
                 </div>
 
-                <form onSubmit={handleLogin} className='flex flex-col items-center w-1/2'>
+                <form onSubmit={(e) => {
+                    e.preventDefault(); 
+                    handleSignIn();
+                }} className='flex flex-col items-center w-1/2'>
                     <input 
                         type="text" 
                         placeholder="Username"
@@ -70,7 +94,7 @@ export default function LoginPage() {
 
                     <button 
                         type="submit" 
-                        className="w-full bg-gray-600 hover:bg-gray-900 text-white py-2 px-4 rounded-md">
+                        className="w-full bg-gray-600 hover:bg-gray-900 text-white py-2 px-4 rounded-md" >
                         Login
                     </button>
                 </form>

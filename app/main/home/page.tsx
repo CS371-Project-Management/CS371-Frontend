@@ -2,10 +2,13 @@
 
 import Image from 'next/image';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Course } from '@/interfaces/course';
 import Card from '@/components/Card';
 import ModalJoinClassroom from '@/components/modals/classroom/Join';
+import { UserService } from '@/services/userService';
+import { User } from '@/models/User';
+import { p } from 'framer-motion/client';
  
 const courses = [
     {
@@ -43,6 +46,30 @@ const courses = [
 export default function HomePage() {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+      const [user, setUser] = useState<User | null>(null);
+
+     useEffect(() => {
+        async function fetchUsers() {
+            try {
+                //localStorage จากที่เก็บ userId ในหน้า Login
+                const userId = localStorage.getItem('user');
+                if (!userId) {
+                    console.error('User ID not found in localStorage');
+                    return;
+                }
+                const userFetch = await UserService.getUserById(Number(userId));
+                setUser(userFetch);
+            } catch (error: any) {
+                const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+                console.error('Error fetching users:', errorMessage);
+            }
+        }
+        
+        fetchUsers();
+      }, []);
+
+ 
+    
 
     const openModal = (course: Course) => {
         setSelectedCourse(course);
@@ -60,8 +87,10 @@ export default function HomePage() {
                 className="opacity-80"
                 />
 
+
                 <div className="relative flex p-10 text-center">
                 <h1 className="text-7xl font-bold text-blue-400">LEARNING HUB</h1>
+                <h1 className="text-7xl font-bold text-blue-400">{user?.username}</h1>
                 </div>
             </div>
 

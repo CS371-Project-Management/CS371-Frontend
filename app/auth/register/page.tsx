@@ -1,8 +1,46 @@
 'use client';
 
+import { UserService } from '@/services/userService';
+import { UserTypesCreate } from '@/types/userTypes';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function RegisterPage() {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const router = useRouter();
+
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+        };
+
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(event.target.value);
+    };
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+        };
+
+        async function handleRegisterClick() {
+            let userRegis: UserTypesCreate = {
+              username: username,
+              password: password,
+              email: email,
+            };
+        
+            try {
+              await UserService.register(userRegis);
+              router.push('/auth/login')
+              
+            } catch (err) {
+              alert('Registration failed: ' + JSON.stringify(err));
+            }
+          }
+
     return (
         <div className="flex h-screen">
             <div className="w-full flex flex-col justify-center items-center p-10 bg-white text-black">
@@ -20,14 +58,14 @@ export default function RegisterPage() {
                     <hr className="flex-grow border-gray-300" />
                 </div>
 
-                <input type="text" placeholder="Username" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
-                <input type="password" placeholder="Password" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
-                <input type="email" placeholder="Email address" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
+                <input type="text" placeholder="Username"  className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleUsernameChange}/>
+                <input type="password" placeholder="Password" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handlePasswordChange} />
+                <input type="email" placeholder="Email address" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleEmailChange}/>
                 <input type="text" placeholder="First name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
                 <input type="text" placeholder="Last name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
 
-                <a href="/auth/login" className='flex justify-center w-full'>
-                    <button className="w-1/2 bg-gray-600 hover:bg-gray-900 py-2 px-4 rounded-md">Register</button>
+                <a  className='flex justify-center w-full'>
+                    <button className="w-1/2 bg-black text-white py-2 px-4 rounded-md" onClick={() => {handleRegisterClick();}}>Register</button>
                 </a>
 
                 <p className="mt-4 text-gray-500">

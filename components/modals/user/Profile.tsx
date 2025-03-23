@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import ModalEditProfile from "./EditProfile";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
     isOpen: boolean;
@@ -14,6 +15,16 @@ export default function ModalProfile({ isOpen, onClose }: ModalProps) {
     const openEditModal = () => {
         setIsEditModalOpen(true);
     };
+
+    const router = useRouter();
+
+
+    async function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            router.push("/auth/login");
+
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-black">
@@ -49,7 +60,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProps) {
                     </div>
 
                     <div className="flex justify-between mt-6">
-                        <button className="w-24 bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md" onClick={() => alert('Logging out...')}>Log out</button>
+                        <button className="w-24 bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md" onClick={handleLogout}>Log out</button>
                         <button className="w-24 bg-gray-500 hover:bg-gray-800 text-white px-4 py-2 rounded-md" onClick={() => onClose}>Done</button>
                     </div>
                 </div>

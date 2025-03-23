@@ -57,8 +57,8 @@ export default function CoursePage() {
 
             <div className="flex flex-wrap gap-6 ml-25">
                 {courses.map((course, index) => (
-                    <Link href={course.path}>
-                        <div key={index}>
+                    <Link href={course.path} key={index}>
+                        <div >
                             <Card image={course.image} title={course.title} description={course.description}></Card>
                         </div>
                     </Link>
