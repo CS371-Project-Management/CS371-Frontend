@@ -23,9 +23,11 @@ export default function RegisterPage() {
                 <input type="text" placeholder="Username" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
                 <input type="password" placeholder="Password" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
                 <input type="email" placeholder="Email address" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
+                <input type="text" placeholder="First name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
+                <input type="text" placeholder="Last name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
 
                 <a href="/auth/login" className='flex justify-center w-full'>
-                    <button className="w-1/2 bg-black text-white py-2 px-4 rounded-md">Register</button>
+                    <button className="w-1/2 bg-gray-600 hover:bg-gray-900 py-2 px-4 rounded-md">Register</button>
                 </a>
 
                 <p className="mt-4 text-gray-500">

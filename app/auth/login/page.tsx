@@ -1,8 +1,29 @@
 'use client';
 
+import ModalReportFail from '@/components/modals/report/ReportFail';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const router = useRouter();
+    const [isFailed, setIsFailed] = useState(false);
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+
+        if (username === 'admin' && password === 'password') {
+            router.push('/main/home');
+        } else {
+            setIsFailed(true)
+            setError('Invalid username or password.');
+        }
+    };
+    
     return (
         <div className="flex h-screen">
             <div className="w-full flex flex-col justify-center items-center p-10 bg-white text-black">
@@ -20,19 +41,39 @@ export default function LoginPage() {
                     <hr className="flex-grow border-gray-300" />
                 </div>
 
-                <input type="text" placeholder="Username" className="w-1/2 border rounded-full p-2 pl-5 mb-4 text-black" />
-                <input type="password" placeholder="Password" className="w-1/2 border rounded-full p-2 pl-5 mb-4 text-black" />
+                <form onSubmit={handleLogin} className='flex flex-col items-center w-1/2'>
+                    <input 
+                        type="text" 
+                        placeholder="Username"
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full border rounded-full p-2 pl-5 mb-4 text-black"
+                        required
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Password"
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full border rounded-full p-2 pl-5 mb-4 text-black"
+                        required
+                    />
 
-                <div className='flex justify-between w-1/2 mb-4 text-sm text-black'>
-                    <label className='flex'>
-                        <input type="checkbox" className='mr-2'/> Remember me
-                    </label>
-                    <a href="/auth/forgot_password" className='underline'>Forgot Password?</a>
-                </div>
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
 
-                <a href="/user/home" className='flex justify-center w-full'>
-                    <button className="w-1/2 bg-black text-white py-2 px-4 rounded-md">Login</button>
-                </a>
+                    <div className='flex justify-between w-full mb-4 text-sm text-black'>
+                        <label className='flex'>
+                            <input type="checkbox" className='mr-2'/> Remember me
+                        </label>
+                        <a href="/auth/forgot_password" className='underline'>Forgot Password?</a>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        className="w-full bg-gray-600 hover:bg-gray-900 text-white py-2 px-4 rounded-md">
+                        Login
+                    </button>
+                </form>
 
                 <p className="mt-4 text-gray-500">
                     Don't have an account? 
@@ -43,6 +84,13 @@ export default function LoginPage() {
             <div className="w-full">
                 <Image src="/images/image.jpg" alt="Register Image" width={800} height={600} className="h-full w-full object-cover" />
             </div>
+
+            <ModalReportFail
+                isOpen={isFailed}
+                onClose={() => {setIsFailed(false)}}
+                title='There is no account exists'
+                press='Agree'>
+            </ModalReportFail>
         </div>
     );
 }

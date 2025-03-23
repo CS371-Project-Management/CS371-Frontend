@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
+import Navbar from '@/components/Navbar';
+import QuizSidebar from '@/components/QuizSidebar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function QuizLayout({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="flex flex-col h-screen bg-white text-black">
@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             <div className="flex flex-col pt-21">
                 <div className="z-1">
-                    <Sidebar/>
+                    <QuizSidebar/>
                 </div>
 
                 <main className="ml-18.5">

@@ -49,10 +49,10 @@ export default function CoursePage() {
                 <h2 className="text-3xl font-bold">All Courses</h2>
 
                 {/* <STAFF></STAFF> */}
-                {/* <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
+                <button className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
                     onClick={() => {setIsCreateCourse(true)}}>
                     Create New Course
-                </button>    */}
+                </button>   
             </div>
 
             <div className="flex flex-wrap gap-6 ml-25">
