@@ -30,18 +30,18 @@ export default function DetailPage() {
             </Link>
 
             <div className="flex justify-end gap-5 mb-4">
-                        <button 
-                            className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => {setIsEditCourse(true)}}>
-                            Edit
-                        </button>
+                <button 
+                    className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => {setIsEditCourse(true)}}>
+                    Edit
+                </button>
 
-                        <button 
-                            className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                            onClick={() => {setIsDeleteCourse(true)}}>
-                            Delete
-                        </button>
-                    </div>
+                <button 
+                    className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => {setIsDeleteCourse(true)}}>
+                    Delete
+                </button>
+            </div>
 
             <div className="flex gap-6 mt-6">
                 <div className="w-1/2">
