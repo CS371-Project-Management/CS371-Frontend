@@ -145,7 +145,7 @@ export default function ModalEditProfile({ isOpen, onClose }: ModalProps) {
                 </div>
             </div>
 
-            <ReportSuccess isOpen={showSuccess} onClose={() => setShowSuccess(false)} title="Edit profile is success." press="OK"></ReportSuccess>
+            <ReportSuccess isOpen={showSuccess} onClose={() => setShowSuccess(false)} title="Edit profile is success" press="OK"></ReportSuccess>
             <ReportFail isOpen={showFailure} onClose={() => setShowFailure(false)} title="Edit profile is failed" press="OK"></ReportFail>
         </div>
     );
