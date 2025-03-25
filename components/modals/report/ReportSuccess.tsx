@@ -2,10 +2,10 @@ interface ModalProps {
     title: string;
     press: string;
     isOpen: boolean;
-    onClick: () => void;
+    onClose: () => void;
 }
 
-export default function ModalReportSuccess({ isOpen, onClick, title, press }: ModalProps) {
+export default function ModalReportSuccess({ isOpen, onClose, title, press }: ModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -16,7 +16,7 @@ export default function ModalReportSuccess({ isOpen, onClick, title, press }: Mo
                 <div className="flex justify-center mt-5">
 
                     <button className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
-                        onClick={onClick}>
+                        onClick={onClose}>
                         {press}
                     </button>
                 </div>
