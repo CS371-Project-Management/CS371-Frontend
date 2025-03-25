@@ -40,8 +40,8 @@ export default function LoginPage() {
           router.push("/main/home");
       
         } catch (err: any) {
-          console.log('Login Error:', err);
-          alert('Login failed: ' + JSON.stringify(err.response?.data || err.message));
+            setIsFailed(true)
+            
         }
       }
       
@@ -113,7 +113,7 @@ export default function LoginPage() {
             <ModalReportFail
                 isOpen={isFailed}
                 onClose={() => {setIsFailed(false)}}
-                title='There is no account exists'
+                title='Incorrect username or password.'
                 press='Agree'>
             </ModalReportFail>
         </div>
