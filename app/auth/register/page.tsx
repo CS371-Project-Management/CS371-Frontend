@@ -11,6 +11,8 @@ export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
     const router = useRouter();
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +27,23 @@ export default function RegisterPage() {
         setPassword(event.target.value);
         };
 
+    const handleFirstnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstname(event.target.value);
+        };
+    
+    const handleLastnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstname(event.target.value);
+        };
+
+
         async function handleRegisterClick() {
             let userRegis: UserTypesCreate = {
               username: username,
               password: password,
               email: email,
+              firstname: firstname,
+              lastname: lastname,
+              role: "student"
             };
         
             try {
@@ -61,8 +75,8 @@ export default function RegisterPage() {
                 <input type="text" placeholder="Username"  className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleUsernameChange}/>
                 <input type="password" placeholder="Password" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handlePasswordChange} />
                 <input type="email" placeholder="Email address" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleEmailChange}/>
-                <input type="text" placeholder="First name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
-                <input type="text" placeholder="Last name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" />
+                <input type="text" placeholder="First name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleFirstnameChange}/>
+                <input type="text" placeholder="Last name" className="w-1/2 border rounded-full p-2 pl-5 mb-4" onChange={handleLastnameChange}/>
 
                 <a  className='flex justify-center w-full'>
                     <button className="w-1/2 bg-black text-white py-2 px-4 rounded-md" onClick={() => {handleRegisterClick();}}>Register</button>

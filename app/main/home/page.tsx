@@ -52,12 +52,13 @@ export default function HomePage() {
         async function fetchUsers() {
             try {
                 //localStorage จากที่เก็บ userId ในหน้า Login
-                const userId = localStorage.getItem('user');
+                const userId = JSON.parse(localStorage.getItem('user') || 'null');
                 if (!userId) {
                     console.error('User ID not found in localStorage');
                     return;
                 }
-                const userFetch = await UserService.getUserById(Number(userId));
+                
+                const userFetch = await UserService.getUserById(userId)
                 setUser(userFetch);
             } catch (error: any) {
                 const errorMessage = error.response?.data?.message || error.message || 'Unknown error';

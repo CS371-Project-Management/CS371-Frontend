@@ -5,15 +5,21 @@ export interface UserTypesLogin{
 }
 
 export interface UserTypesResponse {
-    id:number,
+    id:string,
     username: string;
     email: string;
     password: string;
+    firstname: string;
+    lastname: string;
+    role: string;
   }
 
 export interface UserTypesCreate{
     username: string;
     password: string;
     email: string;
+    firstname: string;
+    lastname: string;
+    role: string;
 }
   

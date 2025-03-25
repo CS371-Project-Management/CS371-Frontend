@@ -33,15 +33,16 @@ export class UserService {
 
      
 
-      static async getUserById(id: number): Promise<User> {
+      static async getUserById(id: string): Promise<User> {
         try {
-            const response = await axiosInstance.get<UserTypesResponse>(`/users/${id}`, { withCredentials: true });
+            const response = await axiosInstance.get<UserTypesResponse>("/users/"+id, { withCredentials: true });
+            console.log("id"+id)
             return User.fromResponse(response.data);
         } catch (error:any) {
             if (error.response) {
                 throw new Error(`Failed to fetch user: ${error.response.data.message || 'Unknown error'}`);
             } else {
-                console.error('Error123:', error.message);
+                console.error('Error:', error.message);
                 throw new Error(`Failed to fetch user: ${error.message || 'Unknown error'}`);
             }
         }
@@ -49,7 +50,7 @@ export class UserService {
 
     static async updateUser(id: number, user:User): Promise<User>{
         try{
-            const reponse = await axiosInstance.put<UserTypesResponse>(`/users/${id}`, user.toJSON(),{withCredentials:true});
+            const reponse = await axiosInstance.put<UserTypesResponse>(`/users/`+id, user.toJSON(),{withCredentials:true});
             return User.fromResponse(reponse.data);
         }catch(error){
             throw new Error('Failed to update user');

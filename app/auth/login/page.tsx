@@ -33,6 +33,7 @@ export default function LoginPage() {
         try {
           const res = await UserService.login(userLogin);
           localStorage.setItem('token', res.token);
+          console.log("res.userid: "+ res.user_id);
 
             localStorage.setItem('user', JSON.stringify(res.user_id));
             const storedUser = localStorage.getItem('user');
