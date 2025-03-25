@@ -91,13 +91,8 @@ export default function MyClassroomPage() {
 
             <div className="flex flex-wrap gap-6 ml-5">
                 {courses.map((course, index) => (
-<<<<<<< HEAD:app/main/my_classroom/page.tsx
                     <Link href='/main/my_classroom/classroom'>
                         <div key={index}>
-=======
-                    <Link href='/user/my_classroom/classroom' key={index}>
-                        <div >
->>>>>>> 31c5813 (add user-api):app/user/my_classroom/page.tsx
                             <Card image={course.image} title={course.title} description={course.description}></Card>
                         </div>
                     </Link>
