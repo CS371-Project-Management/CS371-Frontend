@@ -14,7 +14,9 @@ export class UserService {
           console.log('Login Success:', res.data);
           return res.data;
         } catch (error: any) {
+
           console.log('Login Error:', error.response || error.message);
+
           throw new Error('Failed to login');
         }
       }
