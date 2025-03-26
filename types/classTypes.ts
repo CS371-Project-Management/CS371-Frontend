@@ -1,5 +1,6 @@
 export interface ClassTypesResponse {
-    id:number;
+    id:string;
+    user_id: string;
     inviteCode: string;
     title: string;
     description: string;
@@ -7,13 +8,14 @@ export interface ClassTypesResponse {
   }
 
 export interface ClassTypesCreate{
+    user_id: string;
     title: string;
     description: string;
-    accaccessibility: string;
+    accessibility: string;
 }
 
 export interface ClassTypesUpdate {
-    id:number;
+    id:string;
     title: string;
     description: string;
     accessibility: string;

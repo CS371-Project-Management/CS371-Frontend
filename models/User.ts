@@ -1,16 +1,22 @@
 import { UserTypesResponse } from "@/types/userTypes";
 
 export class User {
-    id: number;
+    id: string;
     username: string;
     email: string;
     password: string;
+    firstname: string;
+    lastname: string;
+    role: string;
   
     constructor(data: UserTypesResponse) {
-     this.id = data.id;
+      this.id = data.id;
       this.username = data.username;
       this.email = data.email;
       this.password = data.password;
+      this.firstname = data.firstname;
+      this.lastname = data.lastname;
+      this.role = data.role;
     }
   
     toJSON() {
