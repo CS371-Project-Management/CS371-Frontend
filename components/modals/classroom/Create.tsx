@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Home, Plus, Book, Pencil, Upload } from "lucide-react";
+import { ClassTypesCreate } from "@/types/classTypes";
+import { ClassService } from "@/services/classServices";
 
 interface ModalProps {
     isOpen: boolean;
@@ -12,9 +14,29 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
     if (!isOpen) return null;
     const [isPrivate, setIsPrivate] = useState(false);
 
+    const handleCreateClass = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        const req: ClassTypesCreate = {
+            title: formData.get("title") as string,
+            description: formData.get("description") as string,
+            accessibility: isPrivate ? "private" : "public",
+        };
+    
+        try {
+            // await ClassService.createClass(req);
+            onClose(); // Close modal on success
+        } catch (error) {
+            console.error("Error creating class:", error);
+        }
+    };
+    
+ 
     return (
         <div className="fixed inset-0 z-1 flex items-center justify-center bg-black/50 backdrop-blur-sm text-black">
-            <div className="bg-white p-6 rounded-2xl shadow-xl w-[600px]">
+            <form onSubmit={handleCreateClass} className="bg-white p-6 rounded-2xl shadow-xl w-[600px]">
                 <h2 className="text-xl font-bold mb-4">CREATE NEW CLASSROOM</h2>
 
                 <div className="mb-4">
@@ -23,6 +45,7 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
                         type="text"
                         placeholder="Classroom name"
                         className="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="title"
                     />
                 </div>
 
@@ -39,6 +62,7 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
                     <textarea
                         placeholder="Description"
                         className="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none h-24"
+                        name="description"
                     ></textarea>
                 </div>
 
@@ -65,7 +89,7 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
                         Save
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

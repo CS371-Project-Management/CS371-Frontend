@@ -12,6 +12,8 @@ export default function ModalCreateCourse({ isOpen, onClose }: ModalProps) {
     if (!isOpen) return null;
     const [isPrivate, setIsPrivate] = useState(false);
 
+    
+
     return (
         <div className="fixed inset-0 z-1 flex items-center justify-center bg-black/50 backdrop-blur-sm text-black">
             <div className="bg-white p-6 rounded-2xl shadow-xl w-[600px]">

@@ -9,6 +9,7 @@ import ModalJoinClassroom from '@/components/modals/classroom/Join';
 import { UserService } from '@/services/userService';
 import { User } from '@/models/User';
 import { p } from 'framer-motion/client';
+import { ClassService } from '@/services/classServices';
  
 const courses = [
     {
@@ -42,6 +43,8 @@ const courses = [
         icon: <BookOpen size={24} />,
     },
 ];
+
+const classes = ClassService.getAllClasses();
 
 export default function HomePage() {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);

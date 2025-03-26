@@ -9,7 +9,7 @@ export interface ClassTypesResponse {
 export interface ClassTypesCreate{
     title: string;
     description: string;
-    accaccessibility: string;
+    accessibility: string;
 }
 
 export interface ClassTypesUpdate {

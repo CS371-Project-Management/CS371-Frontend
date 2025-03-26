@@ -2,6 +2,7 @@
 
 import Card from "@/components/Card";
 import ModalCreateClassroom from "@/components/modals/classroom/Create";
+import { CourseService } from "@/services/courseService";
 import { BookOpen, Code, Database, Palette } from "lucide-react";
 import { useState } from "react";
 
