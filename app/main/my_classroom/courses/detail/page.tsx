@@ -8,6 +8,7 @@ import ModalEditCourse from "@/components/modals/course/Edit";
 import ModalDeleteCourse from "@/components/modals/course/Delete";
 import ModalReportForSure from "@/components/modals/report/ForSure";
 import ReportFail from "@/components/modals/report/ReportFail";
+import ModalDeleteLesson from "@/components/modals/course/DeleteLesson";
 
 const lessons = [
     { title: "Lesson 1", status: "completed" },
@@ -19,6 +20,7 @@ const lessons = [
 export default function DetailPage() {
     const [isEditCourse, setIsEditCourse] = useState(false);
     const [isDeleteCourse, setIsDeleteCourse] = useState(false);
+    const [isDeleteLesson, setIsDeleteLesson] = useState(false);
     const [forSure, setForSure] = useState(false);
     const [calcFail, setCalcFail] = useState(false);
 
@@ -41,6 +43,15 @@ export default function DetailPage() {
                 Back to Courses List
                 </div>
             </Link>
+
+            <div>
+                <button
+                    className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => setIsDeleteCourse(true)}
+                    >
+                    Delet
+                </button>
+            </div>
 
             <div className="flex gap-6 mt-6">
                 <div className="w-1/2">
@@ -79,11 +90,27 @@ export default function DetailPage() {
                     className="flex justify-between items-center bg-gray-100 p-4 px-5 rounded-lg shadow-sm mb-3"
                 >
                     <p className="text-lg">{lesson.title}</p>
-                    {lesson.status === "completed" ? (
+                    {/* {lesson.status === "completed" ? (
                     <CheckCircle className="text-blue-500 w-6 h-6" />
                     ) : (
                     <span className="text-gray-500">{lesson.status}</span>
-                    )}
+                    )} */}
+
+                    <div className="flex gap-5">
+                        <button
+                            className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                            onClick={() => setIsEditCourse(true)}
+                            >
+                            Edit
+                        </button>
+
+                        <button
+                            className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                            onClick={() => setIsDeleteLesson(true)}
+                            >
+                            Delelte
+                        </button>
+                    </div>
                 </div>
                 ))}
             </div>
@@ -97,6 +124,11 @@ export default function DetailPage() {
                 isOpen={isDeleteCourse}
                 onClose={() => setIsDeleteCourse(false)}
             />
+
+            <ModalDeleteLesson
+                isOpen={isDeleteLesson}
+                onClose={() => {setIsDeleteLesson}}>
+            </ModalDeleteLesson>
 
             <ModalReportForSure
                 isOpen={forSure}

@@ -8,7 +8,7 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function ModalDeleteCourse({ isOpen, onClose }: ModalProps) {
+export default function ModalDeleteLesson({ isOpen, onClose }: ModalProps) {
     const [showFail, setShowFail] = useState(false);
 
     if (!isOpen) return null;
@@ -26,7 +26,7 @@ export default function ModalDeleteCourse({ isOpen, onClose }: ModalProps) {
         <>
             <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50 backdrop-blur-sm text-black">
                 <div className="flex relative flex-col gap-3 p-8 bg-white rounded-lg shadow-lg max-w-md w-full text-center">
-                <p className="text-lg font-bold">Do you want to delete this course?</p>
+                <p className="text-lg font-bold">Do you want to delete this lesson?</p>
                 
                 <div className="flex justify-around mt-5">
                     <button
@@ -49,7 +49,7 @@ export default function ModalDeleteCourse({ isOpen, onClose }: ModalProps) {
             <ReportFail
                 isOpen={showFail}
                 onClose={() => setShowFail(false)}
-                title="Failed to delete course"
+                title="Failed to delete lesson"
                 press="OK"
             />
         </>
