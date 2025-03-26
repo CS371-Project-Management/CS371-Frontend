@@ -17,7 +17,6 @@ export default function MissingWord() {
     const [showFailSave, setShowFailSave] = useState(false);
     const [errors, setErrors] = useState<{ question?: string; missingWord?: string; answer?: string }>({});
 
-    // Handle Image Upload
     const handleImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>,
         setImage: React.Dispatch<React.SetStateAction<string | null>>
@@ -28,7 +27,6 @@ export default function MissingWord() {
         }
     };
 
-    // Validate form
     const validateForm = () => {
         let newErrors: { question?: string; missingWord?: string; answer?: string } = {};
 
@@ -40,15 +38,13 @@ export default function MissingWord() {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle submit
     const handleSubmit = () => {
         if (!validateForm()) {
         setShowFailRequired(true);
         return;
         }
 
-        // Simulate a failed save attempt
-        const saveSuccessful = Math.random() > 0.5; // 50% chance of failing
+        const saveSuccessful = Math.random() > 0.5;
         if (saveSuccessful) {
         setShowSuccess(true);
         } else {
@@ -72,7 +68,6 @@ export default function MissingWord() {
                 </button>
             </div>
             
-            {/* Question Input */}
             <input
                 type="text"
                 placeholder="Write your question"
@@ -82,7 +77,6 @@ export default function MissingWord() {
             />
             {errors.question && <p className="text-red-500 text-sm">{errors.question}</p>}
 
-            {/* Question Image Upload */}
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {questionImage ? (
                 <img src={questionImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
@@ -99,7 +93,6 @@ export default function MissingWord() {
                 )}
             </div>
 
-            {/* Missing Word Input */}
             <input
                 type="text"
                 placeholder="Write down the missing words."
@@ -115,7 +108,6 @@ export default function MissingWord() {
                 </button>
             </div>
 
-            {/* Answer */}
             <p className="mt-4 font-bold">Answer:</p>
             <input
                 type="text"
@@ -126,10 +118,8 @@ export default function MissingWord() {
             />
             {errors.answer && <p className="text-red-500 text-sm">{errors.answer}</p>}
 
-            {/* Answer Explanation */}
             <p className="mt-4 font-bold">Answer Description</p>
 
-            {/* Answer Image Upload */}
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {answerImage ? (
                 <img src={answerImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
@@ -146,7 +136,6 @@ export default function MissingWord() {
                 )}
             </div>
 
-            {/* Answer Description */}
             <textarea
                 placeholder="Description"
                 value={answerDescription}
@@ -154,7 +143,6 @@ export default function MissingWord() {
                 className="w-full border rounded p-2 h-32"
             />
 
-            {/* Success & Failure Modals */}
             <ReportSuccess 
                 isOpen={showSuccess} 
                 onClose={() => setShowSuccess(false)} 

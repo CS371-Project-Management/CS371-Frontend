@@ -17,7 +17,6 @@ export default function OrderingQuestion() {
     const [showFailSave, setShowFailSave] = useState(false);
     const [errors, setErrors] = useState<{ question?: string; answers?: string }>({});
 
-    // Handle Image Upload
     const handleImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>,
         setImage: React.Dispatch<React.SetStateAction<string | null>>
@@ -28,7 +27,6 @@ export default function OrderingQuestion() {
         }
     };
 
-    // Drag & Drop Handlers
     const handleDragStart = (index: number) => {
         setDraggingIndex(index);
     };
@@ -49,7 +47,6 @@ export default function OrderingQuestion() {
         setDraggingIndex(null);
     };
 
-    // Form Validation
     const validateForm = () => {
         let newErrors: { question?: string; answers?: string } = {};
 
@@ -60,14 +57,13 @@ export default function OrderingQuestion() {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle Submit
     const handleSubmit = () => {
         if (!validateForm()) {
         setShowFailRequired(true);
         return;
         }
 
-        const saveSuccessful = Math.random() > 0.5; // 50% chance of failing
+        const saveSuccessful = Math.random() > 0.5;
         if (saveSuccessful) {
         setShowSuccess(true);
         } else {
@@ -91,7 +87,6 @@ export default function OrderingQuestion() {
                 </button>
             </div>
 
-            {/* Question Input */}
             <input
                 type="text"
                 placeholder="Write your question"
@@ -101,7 +96,6 @@ export default function OrderingQuestion() {
             />
             {errors.question && <p className="text-red-500 text-sm">{errors.question}</p>}
 
-            {/* Question Image Upload */}
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {questionImage ? (
                 <img src={questionImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
@@ -118,7 +112,6 @@ export default function OrderingQuestion() {
                 )}
             </div>
 
-            {/* Answers (Draggable) */}
             <div className="space-y-2">
                 {answers.map((answer, index) => (
                 <div
@@ -142,10 +135,8 @@ export default function OrderingQuestion() {
                 </button>
             </div>
 
-            {/* Answer Description */}
             <p className="mt-4 font-bold">Answer Description</p>
 
-            {/* Answer Image Upload */}
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {answerImage ? (
                 <img src={answerImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
@@ -169,7 +160,6 @@ export default function OrderingQuestion() {
                 className="w-full border rounded p-2 h-32"
             />
 
-            {/* Success & Failure Modals */}
             <ReportSuccess 
                 isOpen={showSuccess} 
                 onClose={() => setShowSuccess(false)} 

@@ -38,8 +38,7 @@ export default function QuizLessonPage() {
             return;
         }
 
-        // Simulate a failed save attempt
-        const saveSuccessful = Math.random() > 0.5; // 50% chance to simulate failure
+        const saveSuccessful = Math.random() > 0.5; 
         if (saveSuccessful) {
             setShowSuccess(true);
         } else {
@@ -63,7 +62,6 @@ export default function QuizLessonPage() {
                 </button>
             </div>
 
-            {/* Content Title Input */}
             <input
                 type="text"
                 placeholder="Content title"
@@ -73,7 +71,6 @@ export default function QuizLessonPage() {
             />
             {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
-            {/* Image Upload Section */}
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {image ? (
                     <img src={image} alt="Uploaded" className="w-full h-full object-cover rounded" />
@@ -85,7 +82,6 @@ export default function QuizLessonPage() {
                 )}
             </div>
 
-            {/* Description Textarea */}
             <textarea
                 placeholder="Description"
                 value={description}
@@ -94,12 +90,10 @@ export default function QuizLessonPage() {
             />
             {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
 
-            {/* Delete Button */}
             <button className="text-red-500 hover:bg-red-100 flex items-center border border-2 p-2 rounded-xl">
                 <Trash className="mr-2" /> Delete
             </button>
 
-            {/* Success & Failure Modals */}
             <ReportSuccess 
                 isOpen={showSuccess} 
                 onClose={() => setShowSuccess(false)} 
