@@ -1,152 +1,168 @@
 'use client';
 
 import { useState } from 'react';
+import ReportSuccess from '@/components/modals/report/ReportSuccess';
+import ReportFail from '@/components/modals/report/ReportFail';
 
-export default function MultiChoice() {
-  const [question, setQuestion] = useState<string>('');
-  const [questionImage, setQuestionImage] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<{ text: string; isCorrect: boolean }[]>([
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-  ]);
-  const [answerImage, setAnswerImage] = useState<string | null>(null);
-  const [answerDescription, setAnswerDescription] = useState<string>('');
+export default function MissingWord() {
+    const [question, setQuestion] = useState('');
+    const [questionImage, setQuestionImage] = useState<string | null>(null);
+    const [missingWord, setMissingWord] = useState('');
+    const [answer, setAnswer] = useState('');
+    const [answerImage, setAnswerImage] = useState<string | null>(null);
+    const [answerDescription, setAnswerDescription] = useState('');
 
-  // Handle Image Upload
-  const handleImageUpload = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    setImage: React.Dispatch<React.SetStateAction<string | null>>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showFailRequired, setShowFailRequired] = useState(false);
+    const [showFailSave, setShowFailSave] = useState(false);
+    const [errors, setErrors] = useState<{ question?: string; missingWord?: string; answer?: string }>({});
 
-  // Handle Answer Change
-  const handleAnswerChange = (index: number, value: string) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index].text = value;
-    setAnswers(updatedAnswers);
-  };
+    const handleImageUpload = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        setImage: React.Dispatch<React.SetStateAction<string | null>>
+    ) => {
+        const file = event.target.files?.[0];
+        if (file) {
+        setImage(URL.createObjectURL(file));
+        }
+    };
 
-  // Toggle Correct Answer
-  const toggleCorrectAnswer = (index: number) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index].isCorrect = !updatedAnswers[index].isCorrect;
-    setAnswers(updatedAnswers);
-  };
+    const validateForm = () => {
+        let newErrors: { question?: string; missingWord?: string; answer?: string } = {};
 
-  // Add More Answers
-  const addAnswer = () => {
-    setAnswers([...answers, { text: '', isCorrect: false }]);
-  };
+        if (!question.trim()) newErrors.question = 'Question is required';
+        if (!missingWord.trim()) newErrors.missingWord = 'Missing word is required';
+        if (!answer.trim()) newErrors.answer = 'Answer is required';
 
-  // Remove Answer
-  const removeAnswer = (index: number) => {
-    setAnswers(answers.filter((_, i) => i !== index));
-  };
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
-  return (
-    <div className="ml-60 mt-4 p-6 mr-5">
-    <div className='flex gap-3 mb-3'>
-        <button 
-            className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-            onClick={() => {}}>
-            Edit
-        </button>
+    const handleSubmit = () => {
+        if (!validateForm()) {
+        setShowFailRequired(true);
+        return;
+        }
 
-        <button 
-            className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-            onClick={() => {}}>
-            Submit
-        </button>
-    </div>
+        const saveSuccessful = Math.random() > 0.5;
+        if (saveSuccessful) {
+        setShowSuccess(true);
+        } else {
+        setShowFailSave(true);
+        }
+    };
 
-      {/* Question Input */}
-      <input
-        type="text"
-        placeholder="Write your question"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        className="w-full border rounded p-2 mb-4"
-      />
+    return (
+        <div className="ml-60 mt-4 p-6 mr-5">
+            <div className='flex gap-3 mb-3'>
+                <button 
+                className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                onClick={() => {}}>
+                Edit
+                </button>
 
-      {/* Question Image Upload */}
-      <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
-        {questionImage ? (
-          <img src={questionImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
-        ) : (
-          <label className="cursor-pointer text-center text-gray-600">
+                <button 
+                className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+                onClick={handleSubmit}>
+                Submit
+                </button>
+            </div>
+            
             <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e, setQuestionImage)}
-              className="hidden"
+                type="text"
+                placeholder="Write your question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className={`w-full border rounded p-2 mb-2 ${errors.question ? 'border-red-500' : ''}`}
             />
-            <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
-          </label>
-        )}
-      </div>
+            {errors.question && <p className="text-red-500 text-sm">{errors.question}</p>}
 
-      {/* Answer Choices */}
-      {answers.map((answer, index) => (
-        <div key={index} className="flex items-center mb-2">
-          <input
-            type="checkbox"
-            checked={answer.isCorrect}
-            onChange={() => toggleCorrectAnswer(index)}
-            className="mr-2"
-          />
-          <input
-            type="text"
-            placeholder={`Answer ${index + 1}`}
-            value={answer.text}
-            onChange={(e) => handleAnswerChange(index, e.target.value)}
-            className="border rounded p-2 w-full"
-          />
-          {index >= 4 && (
-            <button onClick={() => removeAnswer(index)} className="ml-2 text-red-500 hover:text-white hover:bg-red-600 font-bold border border-2 p-2 w-12 rounded-xl">
-              X
-            </button>
-          )}
+            <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
+                {questionImage ? (
+                <img src={questionImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
+                ) : (
+                <label className="cursor-pointer text-center text-gray-600">
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, setQuestionImage)}
+                    className="hidden"
+                    />
+                    <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
+                </label>
+                )}
+            </div>
+
+            <input
+                type="text"
+                placeholder="Write down the missing words."
+                value={missingWord}
+                onChange={(e) => setMissingWord(e.target.value)}
+                className={`w-full border rounded p-2 mb-2 ${errors.missingWord ? 'border-red-500' : ''}`}
+            />
+            {errors.missingWord && <p className="text-red-500 text-sm">{errors.missingWord}</p>}
+
+            <div className='flex justify-end'>
+                <button className="border rounded px-4 py-1 text-gray-700 hover:text-white hover:bg-gray-600">
+                Confirm
+                </button>
+            </div>
+
+            <p className="mt-4 font-bold">Answer:</p>
+            <input
+                type="text"
+                placeholder="Answer"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className={`border rounded p-2 w-full ${errors.answer ? 'border-red-500' : ''}`}
+            />
+            {errors.answer && <p className="text-red-500 text-sm">{errors.answer}</p>}
+
+            <p className="mt-4 font-bold">Answer Description</p>
+
+            <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
+                {answerImage ? (
+                <img src={answerImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
+                ) : (
+                <label className="cursor-pointer text-center text-gray-600">
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, setAnswerImage)}
+                    className="hidden"
+                    />
+                    <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
+                </label>
+                )}
+            </div>
+
+            <textarea
+                placeholder="Description"
+                value={answerDescription}
+                onChange={(e) => setAnswerDescription(e.target.value)}
+                className="w-full border rounded p-2 h-32"
+            />
+
+            <ReportSuccess 
+                isOpen={showSuccess} 
+                onClose={() => setShowSuccess(false)} 
+                title="Your answer has been saved successfully!" 
+                press="OK" 
+            />
+
+            <ReportFail 
+                isOpen={showFailRequired} 
+                onClose={() => setShowFailRequired(false)} 
+                title="Required fields are missing!" 
+                press="OK" 
+            />
+
+            <ReportFail 
+                isOpen={showFailSave} 
+                onClose={() => setShowFailSave(false)} 
+                title="Cannot save your answer. Please try again later." 
+                press="OK" 
+            />
         </div>
-      ))}
-
-      {/* Add More Answer Button */}
-      <button onClick={addAnswer} className="flex items-center mt-4 ml-5 border rounded px-2 py-1 text-gray-700 hover:text-white hover:bg-gray-600 mt-2">
-            <p className='text-2xl mr-1'>+</p> Add more answer
-        </button>
-
-      {/* Answer Explanation */}
-      <p className="mt-4 font-bold">Answer Description</p>
-
-      {/* Answer Image Upload */}
-      <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
-        {answerImage ? (
-          <img src={answerImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
-        ) : (
-          <label className="cursor-pointer text-center text-gray-600">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e, setAnswerImage)}
-              className="hidden"
-            />
-            <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
-          </label>
-        )}
-      </div>
-
-      {/* Answer Description */}
-      <textarea
-        placeholder="Description"
-        value={answerDescription}
-        onChange={(e) => setAnswerDescription(e.target.value)}
-        className="w-full border rounded p-2 h-32"
-      />
-    </div>
-  );
+    );
 }

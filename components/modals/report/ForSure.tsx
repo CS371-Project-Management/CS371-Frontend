@@ -6,7 +6,7 @@ interface ModalProps {
     onClose: () => void;
 }
 
-export default function ModalReportSuccess({ isOpen, onClose, title, subtitle, press }: ModalProps) {
+export default function ModalReportForSure({ isOpen, onClose, title, subtitle, press }: ModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -15,9 +15,14 @@ export default function ModalReportSuccess({ isOpen, onClose, title, subtitle, p
                 <p className="text-lg font-bold">{title}</p>
                 {subtitle && <p className="text-lg font-bold">{subtitle}</p>}
                 
-                <div className="flex justify-center mt-5">
-                    <button className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                <div className="flex justify-around mt-5">
+                    <button className="bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                         onClick={onClose}>
+                        Cancel
+                    </button>
+
+                    <button className="bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                        onClick={() => {}}>
                         {press}
                     </button>
                 </div>
