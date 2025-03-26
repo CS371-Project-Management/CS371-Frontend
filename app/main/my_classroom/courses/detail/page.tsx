@@ -44,9 +44,16 @@ export default function DetailPage() {
                 </div>
             </Link>
 
-            <div>
+            <div className="flex justify-end">
                 <button
                     className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => setIsEditCourse(true)}
+                >
+                    Edit
+                </button>
+
+                <button
+                    className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
                     onClick={() => setIsDeleteCourse(true)}
                 >
                     Delete
@@ -96,7 +103,7 @@ export default function DetailPage() {
                             <div className="flex gap-5">
                                 <button
                                     className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                                    onClick={() => setIsEditCourse(true)}
+                                    onClick={() => {}}
                                 >
                                     Edit
                                 </button>
