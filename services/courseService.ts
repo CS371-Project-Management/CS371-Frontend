@@ -17,7 +17,7 @@ export class CourseService {
       }
 
      
-      static async getCourseByClassId(id: number): Promise<Course[]> {
+      static async getCourseByClassId(id: string): Promise<Course[]> {
         try {
             const response = await axiosInstance.get<CourseTypesResponse[]>(`/courses/class/${id}`, { withCredentials: true });
             return response.data.map(courseData => Course.fromResponse(courseData));
@@ -31,7 +31,7 @@ export class CourseService {
         }
     }
 
-    static async updateCourse(id: number, course:Course): Promise<Course>{
+    static async updateCourse(id: string, course:Course): Promise<Course>{
         try{
             const reponse = await axiosInstance.put<CourseTypesResponse>(`/courses/${id}`, course.toJSON(),{withCredentials:true});
             return Course.fromResponse(reponse.data);
@@ -40,7 +40,7 @@ export class CourseService {
         }
     }
 
-    static async deleteCourse(id: number): Promise<void>{
+    static async deleteCourse(id: string): Promise<void>{
         try {
             await axiosInstance.delete(`/coueses/${id}`, {withCredentials:true});
         }catch (error){

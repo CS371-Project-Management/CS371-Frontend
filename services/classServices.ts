@@ -5,9 +5,9 @@ import { Class } from "@/models/Class";
 export class ClassService {
       
     
-    static async createClass(classroom: ClassTypesCreate): Promise<any> {
+    static async createClass(classroom: ClassTypesCreate): Promise<void> {
         try {
-          await axiosInstance.post("/classes", classroom);
+          await axiosInstance.post("/classes", classroom, {withCredentials:true});
         } catch (error: any) {
           
           const errorMessage =
@@ -31,7 +31,7 @@ export class ClassService {
         }
     }
 
-    static async getCourseById(id: number): Promise<Class> {
+    static async getCourseById(id: string): Promise<Class> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse>(`/courses/${id}`, { withCredentials: true });
             return Class.fromResponse(response.data);
@@ -45,7 +45,7 @@ export class ClassService {
         }
     }
 
-    static async updateClass(id: number, classroom:Class): Promise<Class>{
+    static async updateClass(id: string, classroom:Class): Promise<Class>{
         try{
             const reponse = await axiosInstance.put<ClassTypesResponse>(`/classes/${id}`, classroom.toJSON(),{withCredentials:true});
             return Class.fromResponse(reponse.data);
@@ -54,13 +54,50 @@ export class ClassService {
         }
     }
 
-    static async deleteClass(id: number): Promise<void>{
+    static async deleteClass(id: string): Promise<void>{
         try {
             await axiosInstance.delete(`/classes/${id}`, {withCredentials:true});
         }catch (error){
             throw new Error('Failed to delete class.')
         }
     }
+
+    static async getInviteCode(class_id: string): Promise<any>{
+        try{
+            const response = await axiosInstance.get(`/classes/${class_id}/invite_code`, { withCredentials: true });
+            return response.data; 
+        }catch{
+            throw new Error('Failed to get invite code.')
+        }
+    }
+
+    static async joinPublicClass(user_id: string, class_id: string): Promise<void>{
+        try{
+            await axiosInstance.post(`/classes/${class_id}/join-public`, { withCredentials: true });
+
+        }catch{
+            throw new Error('Failed to join class.')
+        }
+    }
+
+    static async joinPrivateClass(user_id: string, invite_code: string): Promise<void>{
+        try{
+            await axiosInstance.post(`/classes/join-public`,{withCredentials: true});
+
+        }catch{
+            throw new Error('Failed to join class.')
+        }
+    }
     
+
+    static async leaveClass(user_id: string, class_id: string): Promise<void>{
+        try{
+            await axiosInstance.post(`/classes/leaveClass/${class_id}`,{withCredentials: true});
+
+        }catch{
+            throw new Error('Failed to join class.')
+        }
+    }
+
     
 }

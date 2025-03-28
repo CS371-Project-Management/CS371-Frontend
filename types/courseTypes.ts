@@ -1,5 +1,5 @@
 export interface CourseTypesResponse {
-    id:number,
+    id:string,
     classId: string,
     title: string;
     description: string;
