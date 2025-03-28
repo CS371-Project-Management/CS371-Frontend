@@ -192,7 +192,7 @@ export default function RegisterPage() {
 
             <ModalReportSuccess
                 isOpen={isSuccess}
-                onClick={() => {router.push('/auth/login')}}
+                onClose={() => {router.push('/auth/login')}}
                 title='Create account completed.'
                 press='Sign in'>
             </ModalReportSuccess>

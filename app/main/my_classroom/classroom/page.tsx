@@ -36,7 +36,7 @@ export default function ClassroomPage() {
                         </button>
 
                         {/* <STAFF></STAFF> */}
-                        {/* <div className='flex items-start gap-3 mt-2.5'>
+                        <div className='flex items-start gap-3 mt-2.5'>
                             <span className="text-md font-semibold">Private</span>
                             <label className="flex items-center cursor-pointer">
                                 <input
@@ -61,7 +61,7 @@ export default function ClassroomPage() {
                             className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
                             onClick={() => {setIsDeleteClassroom(true)}}>
                             Delete
-                        </button> */}
+                        </button>
                     </div>
                 </div>
 
