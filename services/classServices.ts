@@ -3,25 +3,26 @@ import { ClassTypesCreate, ClassTypesResponse } from "@/types/classTypes";
 import { Class } from "@/models/Class";
 
 export class ClassService {
-      
-    
+
+
     static async createClass(classroom: ClassTypesCreate): Promise<any> {
         try {
-          await axiosInstance.post("/classes", classroom);
+            console.log(classroom);
+            const response = await axiosInstance.post("/classes", classroom);
         } catch (error: any) {
-          
-          const errorMessage =
-            error.response?.data?.message || error.message || 'Failed to create class.';
-          throw new Error(errorMessage);
-        }
-      }
 
-     
-      static async getAllClasses(): Promise<Class[]> {
+            const errorMessage =
+                error.response?.data?.message || error.message || 'Failed to create class.';
+            throw new Error(errorMessage);
+        }
+    }
+
+
+    static async getAllClasses(): Promise<Class[]> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse[]>(`/classes`, { withCredentials: true });
-            return response.data.map(classroomData => Class.fromResponse(classroomData));
-        } catch (error:any) {
+            return response.data?.map(classroomData => Class.fromResponse(classroomData));
+        } catch (error: any) {
             if (error.response) {
                 throw new Error(`Failed to fetch classes: ${error.response.data.message || 'Unknown error'}`);
             } else {
@@ -35,7 +36,7 @@ export class ClassService {
         try {
             const response = await axiosInstance.get<ClassTypesResponse>(`/courses/${id}`, { withCredentials: true });
             return Class.fromResponse(response.data);
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.response) {
                 throw new Error(`Failed to fetch class: ${error.response.data.message || 'Unknown error'}`);
             } else {
@@ -45,22 +46,22 @@ export class ClassService {
         }
     }
 
-    static async updateClass(id: number, classroom:Class): Promise<Class>{
-        try{
-            const reponse = await axiosInstance.put<ClassTypesResponse>(`/classes/${id}`, classroom.toJSON(),{withCredentials:true});
+    static async updateClass(id: number, classroom: Class): Promise<Class> {
+        try {
+            const reponse = await axiosInstance.put<ClassTypesResponse>(`/classes/${id}`, classroom.toJSON(), { withCredentials: true });
             return Class.fromResponse(reponse.data);
-        }catch(error){
+        } catch (error) {
             throw new Error('Failed to update class.');
         }
     }
 
-    static async deleteClass(id: number): Promise<void>{
+    static async deleteClass(id: number): Promise<void> {
         try {
-            await axiosInstance.delete(`/classes/${id}`, {withCredentials:true});
-        }catch (error){
+            await axiosInstance.delete(`/classes/${id}`, { withCredentials: true });
+        } catch (error) {
             throw new Error('Failed to delete class.')
         }
     }
-    
-    
+
+
 }

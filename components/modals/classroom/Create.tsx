@@ -4,6 +4,11 @@ import { useState } from "react";
 import { Upload } from "lucide-react";
 import ReportSuccess from "@/components/modals/report/ReportSuccess";
 import ReportFail from "@/components/modals/report/ReportFail";
+import { ClassTypesCreate } from "@/types/classTypes";
+import { ClassService } from "@/services/classServices";
+import { User } from "@/models/User";
+import { UserService } from "@/services/userService";
+import { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,9 +26,31 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
     const [showFailRequired, setShowFailRequired] = useState(false);
     const [showFailRandom, setShowFailRandom] = useState(false);
 
+    const [user, setUser] = useState<User | null>(null);
+    
+        useEffect(() => {
+            async function fetchUsers() {
+                try {
+                    const userId = JSON.parse(localStorage.getItem('user') || 'null');
+                    if (!userId) {
+                        console.error('User ID not found in localStorage');
+                        return;
+                    }
+    
+                    const userFetch = await UserService.getUserById(userId)
+                    setUser(userFetch);
+                } catch (error: any) {
+                    const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+                    console.error('Error fetching users:', errorMessage);
+                }
+            }
+    
+            fetchUsers();
+        }, []);
+
     if (!isOpen) return null;
 
-    const handleSave = () => {
+    const handleSave = async () => {
         let newErrors: { classroomName?: string; description?: string } = {};
 
         if (!classroomName.trim()) newErrors.classroomName = "Classroom name is required.";
@@ -34,13 +61,26 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
         setShowFailRequired(true);
         return;
         }
+        const req: ClassTypesCreate = {
+            user_id : user.id,
+            title: classroomName,
+            description: description,
+            accessibility: isPrivate ? "0" : "1",
+        };
 
-        const isSuccessful = Math.random() > 0.5;
-        if (isSuccessful) {
-        setShowSuccess(true);
-        } else {
-        setShowFailRandom(true);
+        try {
+            await ClassService.createClass(req);
+            onClose(); // Close modal on success
+        } catch (error) {
+            console.error("Error creating class:", error);
         }
+
+        // const isSuccessful = Math.random() > 0.5;
+        // if (isSuccessful) {
+        // setShowSuccess(true);
+        // } else {
+        // setShowFailRandom(true);
+        // }
     };
 
     return (

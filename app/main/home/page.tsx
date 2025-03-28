@@ -9,46 +9,40 @@ import ModalJoinClassroom from '@/components/modals/classroom/Join';
 import { UserService } from '@/services/userService';
 import { User } from '@/models/User';
 import { p } from 'framer-motion/client';
- 
-const courses = [
-    {
-        title: 'UX/UI Design Bootcamp',
-        description: 'เรียนออกแบบ UX/UI ตั้งแต่พื้นฐานจนถึงขั้นสูง',
-        image: '/images/image.jpg',
-        icon: <Palette size={24} />,
-    },
-    {
-        title: 'Data Analytics with Python',
-        description: 'วิเคราะห์ข้อมูลด้วย Python และเครื่องมือต่าง ๆ',
-        image: '/images/image.jpg',
-        icon: <Database size={24} />,
-    },
-    {
-        title: 'Fundamental Web Dev',
-        description: 'HTML5 และ CSS3 สำหรับมือใหม่',
-        image: '/images/image.jpg',
-        icon: <Code size={24} />,
-    },
-    {
-        title: 'Introduction to JavaScript',
-        description: 'พื้นฐานการเขียนโปรแกรมด้วย JavaScript',
-        image: '/images/image.jpg',
-        icon: <Code size={24} />,
-    },
-    {
-        title: 'Web App Development with Node.js',
-        description: 'เรียนรู้ Node.js และ Express',
-        image: '/images/image.jpg',
-        icon: <BookOpen size={24} />,
-    },
-];
+import { ClassService } from '@/services/classServices';
+import { Class } from '@/models/Class';
+
+const classes: Class[] = await ClassService.getAllClasses(); //Waittt
+    // [
+    //     new Class({
+    //         id: 1,
+    //         title: "How to Leave",
+    //         inviteCode: "omE",
+    //         description: "Leave someone",
+    //         accessibility: "private",
+    //     }),
+    //     new Class({
+    //         id: 2,
+    //         title: "How to Leave",
+    //         inviteCode: "omE",
+    //         description: "Leave someone",
+    //         accessibility: "private",
+    //     }),
+    //     new Class({
+    //         id: 3,
+    //         title: "How to Leave",
+    //         inviteCode: "omE",
+    //         description: "Leave someone",
+    //         accessibility: "private",
+    //     }),
+    // ]
 
 export default function HomePage() {
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-      const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(null);
 
-     useEffect(() => {
+    useEffect(() => {
         async function fetchUsers() {
             try {
                 //localStorage จากที่เก็บ userId ในหน้า Login
@@ -57,7 +51,7 @@ export default function HomePage() {
                     console.error('User ID not found in localStorage');
                     return;
                 }
-                
+
                 const userFetch = await UserService.getUserById(userId)
                 setUser(userFetch);
             } catch (error: any) {
@@ -65,15 +59,12 @@ export default function HomePage() {
                 console.error('Error fetching users:', errorMessage);
             }
         }
-        
+
         fetchUsers();
-      }, []);
+    }, []);
 
- 
-    
-
-    const openModal = (course: Course) => {
-        setSelectedCourse(course);
+    const openModal = (cls: Class) => {
+        setSelectedCourse(cls);
         setIsModalOpen(true);
     };
 
@@ -81,55 +72,55 @@ export default function HomePage() {
         <div className="bg-gray-100 min-h-screen">
             <div className="relative w-full h-96">
                 <Image
-                src="/images/image.jpg"
-                alt="Learning Hub"
-                layout="fill"
-                objectFit="cover"
-                className="opacity-80"
+                    src="/images/image.jpg"
+                    alt="Learning Hub"
+                    layout="fill"
+                    objectFit="cover"
+                    className="opacity-80"
                 />
 
 
                 <div className="relative flex p-10 text-center">
-                <h1 className="text-7xl font-bold text-blue-400">LEARNING HUB</h1>
-                <h1 className="text-7xl font-bold text-blue-400">{user?.username}</h1>
+                    <h1 className="text-7xl font-bold text-blue-400">LEARNING HUB</h1>
+                    <h1 className="text-7xl font-bold text-blue-400">{user?.username}</h1>
                 </div>
             </div>
 
             <div className="m-10 ml-16">
                 <div className='flex flex-wrap pb-10 gap-y-4'>
-                    {courses.map((course, index) => (
-                        <div key={index} 
-                            className='flex justify-center w-120' 
-                            onClick={() => openModal(course)}>
+                    {classes?.map((cls, index) => (
+                        <div key={index}
+                            className='flex justify-center w-120'
+                            onClick={() => openModal(cls)}>
                             <div className=' h-48 w-96 mr-5 bg-blue-200 rounded-xl'>
-                            <Image
-                                src={course.image}
-                                alt={course.title}
-                                width={300}
-                                height={100}
-                                className="w-full h-full rounded-lg"
-                            />
+                                <Image
+                                    src={cls.image}
+                                    alt={cls.title}
+                                    width={300}
+                                    height={100}
+                                    className="w-full h-full rounded-lg"
+                                />
                             </div>
                         </div>
                     ))}
-                </div>  
+                </div>
 
                 <div className='flex flex-wrap gap-6'>
-                    {courses.map((course, index) => (
+                    {classes?.map((cls, index) => (
                         <div key={index}
-                            onClick={() => openModal(course)}>
-                            <Card image={course.image} title={course.title} description={course.description}></Card>
+                            onClick={() => openModal(cls)}>
+                            <Card image={"/images/image.jpg"} title={cls.title} description={cls.description}></Card>
                         </div>
                     ))}
-                </div>  
+                </div>
             </div>
-            
-            <ModalJoinClassroom 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+
+            <ModalJoinClassroom
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
                 selectedCourse={selectedCourse}>
             </ModalJoinClassroom>
 
         </div>
-    );   
+    );
 }
