@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Course } from '@/interfaces/course';
 import Card from '@/components/Card';
 import ModalJoinClassroom from '@/components/modals/classroom/Join';
 import { UserService } from '@/services/userService';
@@ -38,7 +37,7 @@ const classes: Class[] = await ClassService.getAllClasses(); //Waittt
     // ]
 
 export default function HomePage() {
-    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+    const [selectedClass, setSelectedClass] = useState<Class | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
@@ -64,7 +63,7 @@ export default function HomePage() {
     }, []);
 
     const openModal = (cls: Class) => {
-        setSelectedCourse(cls);
+        setSelectedClass(cls);
         setIsModalOpen(true);
     };
 
@@ -94,7 +93,7 @@ export default function HomePage() {
                             onClick={() => openModal(cls)}>
                             <div className=' h-48 w-96 mr-5 bg-blue-200 rounded-xl'>
                                 <Image
-                                    src={cls.image}
+                                    src={"/images/image.png"}
                                     alt={cls.title}
                                     width={300}
                                     height={100}
@@ -118,7 +117,7 @@ export default function HomePage() {
             <ModalJoinClassroom
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                selectedCourse={selectedCourse}>
+                selectedClass={selectedClass}>
             </ModalJoinClassroom>
 
         </div>
