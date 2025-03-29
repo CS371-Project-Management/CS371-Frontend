@@ -23,6 +23,48 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
 
     if (!isOpen) return null;
 
+    // const handleCreateClassroom = async () => {
+    //     console.log("click")
+    //     const userId = JSON.parse(localStorage.getItem('user') || 'null');
+    //     console.log("userID "+userId)
+    //     try {
+    //         if (!userId) {
+    //             console.error("❌ userId is missing or invalid");
+    //             return;
+    //         }
+       
+    //         const classroomData = {
+    //             user_id: "example-user-id",
+    //             title: "Test Classroom",
+    //             description: "This is a test classroom",
+    //             accessibility: "true",
+    //           };
+
+    //           await ClassService.createClass(classroomData)
+    //           await ClassService.leaveClass("58a86deb-e58a-4fc4-975f-ec602c1fb848")
+    //           const classes: ClassTypesResponse[] = await ClassService.getClassUserJoinByUserID(userId);
+    //           console.log("IJoined class:", classes);
+    //         console.log("✅ Classroom created successfully");
+    //         try {
+    //             const classes = await ClassService.getClassById("58a86deb-e58a-4fc4-975f-ec602c1fb848"); // เรียกฟังก์ชัน getAllClasses()
+    //             console.log(classes); // แสดงผลลัพธ์ใน console
+    //           } catch (error) {
+    //             console.error("Error fetching classes:", error); // ถ้ามีข้อผิดพลาดเกิดขึ้น จะแสดงข้อความผิดพลาดใน console
+    //           }
+    //         // รีเซ็ตข้อมูลหลังการสร้าง
+    //         setTitle("");
+    //         setDescription("");
+    //         setIsPrivate(false);
+
+    //         // ปิด Modal หลังจากสร้างสำเร็จ
+    //         onClose();
+        
+    //     } catch (error) {
+    //         console.error("❌ Error creating classroom:", error);
+    //     }
+    // };
+
+
     const handleSave = () => {
         let newErrors: { classroomName?: string; description?: string } = {};
 
