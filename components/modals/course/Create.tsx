@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Upload } from "lucide-react";
 import ReportFail from "@/components/modals/report/ReportFail";
+import { CourseTypesCreate } from "@/types/courseTypes";
+import { CourseService } from "@/services/courseService";
 
 interface ModalProps {
     isOpen: boolean;
@@ -18,7 +20,7 @@ export default function ModalCreateCourse({ isOpen, onClose }: ModalProps) {
     const [errors, setErrors] = useState<{ courseName?: string; description?: string }>({});
     const [isFail, setIsFail] = useState(false); 
 
-    const handleSave = () => {
+    const handleSave = async () => {
         let newErrors: { courseName?: string; description?: string } = {};
 
         if (!courseName.trim()) {
@@ -34,14 +36,19 @@ export default function ModalCreateCourse({ isOpen, onClose }: ModalProps) {
         }
         setErrors({});
 
-        const saveSuccessful = Math.random() > 0.5; 
-        if (!saveSuccessful) {
-            setIsFail(true);
-            return;
+        const req: CourseTypesCreate = {
+            title: courseName,
+            description: description,
+            classId : "",//Waittt
+            DifficultyLevel : "",//Waittt
+            number : 1,//Waittt
+        };
+        try {
+            await CourseService.createCourse(req);
+            onClose();
+        } catch (error) {
+            console.error("Error creating class:", error);
         }
-
-        console.log("Creating course:", { courseName, description, isPrivate });
-        onClose();
     };
 
     return (

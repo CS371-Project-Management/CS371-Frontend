@@ -5,24 +5,25 @@ import { User } from "@/models/User";
 import { UserTypesResponse } from "@/types/userTypes";
 
 export class ClassService {
-      
     //success
     static async createClass(classroom: ClassTypesCreate): Promise<void> {
         try {
           await axiosInstance.post("/classes", classroom, {withCredentials:true});
         } catch (error: any) {
-          
-          const errorMessage =
-            error.response?.data?.message || error.message || 'Failed to create class.';
-          throw new Error(errorMessage);
+
+            const errorMessage =
+                error.response?.data?.message || error.message || 'Failed to create class.';
+            throw new Error(errorMessage);
         }
-      }
+    }
+
+
 
      //success
       static async getAllClasses(): Promise<Class[]> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse[]>(`/classes`, { withCredentials: true });
-            return response.data.map((classroomData: ClassTypesResponse) => Class.fromResponse(classroomData));
+            return response.data?.map((classroomData: ClassTypesResponse) => Class.fromResponse(classroomData));
         } catch (error:any) {
             if (error.response) {
                 throw new Error(`Failed to fetch classes: ${error.response.data.message || 'Unknown error'}`);
@@ -37,7 +38,7 @@ export class ClassService {
         try {
             const response = await axiosInstance.get<ClassTypesResponse>(`/classes/${id}`, { withCredentials: true });
             return Class.fromResponse(response.data);
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.response) {
                 throw new Error(`Failed to fetch class: ${error.response.data.message || 'Unknown error'}`);
             } else {
@@ -46,12 +47,13 @@ export class ClassService {
             }
         }
     }
+
     //success
     static async updateClass(id: string, classroom:Class): Promise<Class>{
         try{
             const reponse = await axiosInstance.put<ClassTypesResponse>(`/classes/${id}`, classroom.toJSON(),{withCredentials:true});
             return Class.fromResponse(reponse.data);
-        }catch(error){
+        } catch (error) {
             throw new Error('Failed to update class.');
         }
     }
@@ -140,6 +142,6 @@ export class ClassService {
             throw new Error(`Failed to fetch classes: ${errorMessage}`);
         }
     }
-    
-    
+
+
 }

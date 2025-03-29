@@ -4,6 +4,11 @@ import { useState } from "react";
 import { Upload } from "lucide-react";
 import ReportSuccess from "@/components/modals/report/ReportSuccess";
 import ReportFail from "@/components/modals/report/ReportFail";
+import { ClassTypesCreate } from "@/types/classTypes";
+import { ClassService } from "@/services/classServices";
+import { User } from "@/models/User";
+import { UserService } from "@/services/userService";
+import { useEffect } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,49 +26,29 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
     const [showFailRequired, setShowFailRequired] = useState(false);
     const [showFailRandom, setShowFailRandom] = useState(false);
 
+    const [user, setUser] = useState<User | null>(null);
+    
+        useEffect(() => {
+            async function fetchUsers() {
+                try {
+                    const userId = JSON.parse(localStorage.getItem('user') || 'null');
+                    if (!userId) {
+                        console.error('User ID not found in localStorage');
+                        return;
+                    }
+    
+                    const userFetch = await UserService.getUserById(userId)
+                    setUser(userFetch);
+                } catch (error: any) {
+                    const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+                    console.error('Error fetching users:', errorMessage);
+                }
+            }
+    
+            fetchUsers();
+        }, []);
+
     if (!isOpen) return null;
-
-    // const handleCreateClassroom = async () => {
-    //     console.log("click")
-    //     const userId = JSON.parse(localStorage.getItem('user') || 'null');
-    //     console.log("userID "+userId)
-    //     try {
-    //         if (!userId) {
-    //             console.error("❌ userId is missing or invalid");
-    //             return;
-    //         }
-       
-    //         const classroomData = {
-    //             user_id: "example-user-id",
-    //             title: "Test Classroom",
-    //             description: "This is a test classroom",
-    //             accessibility: "true",
-    //           };
-
-    //           await ClassService.createClass(classroomData)
-    //           await ClassService.leaveClass("58a86deb-e58a-4fc4-975f-ec602c1fb848")
-    //           const classes: ClassTypesResponse[] = await ClassService.getClassUserJoinByUserID(userId);
-    //           console.log("IJoined class:", classes);
-    //         console.log("✅ Classroom created successfully");
-    //         try {
-    //             const classes = await ClassService.getClassById("58a86deb-e58a-4fc4-975f-ec602c1fb848"); // เรียกฟังก์ชัน getAllClasses()
-    //             console.log(classes); // แสดงผลลัพธ์ใน console
-    //           } catch (error) {
-    //             console.error("Error fetching classes:", error); // ถ้ามีข้อผิดพลาดเกิดขึ้น จะแสดงข้อความผิดพลาดใน console
-    //           }
-    //         // รีเซ็ตข้อมูลหลังการสร้าง
-    //         setTitle("");
-    //         setDescription("");
-    //         setIsPrivate(false);
-
-    //         // ปิด Modal หลังจากสร้างสำเร็จ
-    //         onClose();
-        
-    //     } catch (error) {
-    //         console.error("❌ Error creating classroom:", error);
-    //     }
-    // };
-
 
     const handleSave = () => {
         let newErrors: { classroomName?: string; description?: string } = {};
@@ -76,13 +61,26 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
         setShowFailRequired(true);
         return;
         }
+        const req: ClassTypesCreate = {
+            user_id : user.id,
+            title: classroomName,
+            description: description,
+            accessibility: isPrivate ? "0" : "1",
+        };
 
-        const isSuccessful = Math.random() > 0.5;
-        if (isSuccessful) {
-        setShowSuccess(true);
-        } else {
-        setShowFailRandom(true);
+        try {
+            await ClassService.createClass(req);
+            onClose(); // Close modal on success
+        } catch (error) {
+            console.error("Error creating class:", error);
         }
+
+        // const isSuccessful = Math.random() > 0.5;
+        // if (isSuccessful) {
+        // setShowSuccess(true);
+        // } else {
+        // setShowFailRandom(true);
+        // }
     };
 
     return (
