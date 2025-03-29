@@ -2,15 +2,15 @@ import { ClassTypesResponse } from "@/types/classTypes";
 
 export class Class {
     id:string;
-    userId: string;
+    user_id: string;
     inviteCode: string;
     title: string;
     description: string;
-    accessibility: boolean;
+    accessibility: string;
   
     constructor(data: ClassTypesResponse) {
     this.id = data.id;
-    this.userId = data.userId;
+    this.user_id = data.user_id;
     this.inviteCode = data.inviteCode;
     this.title = data.title;
     this.description = data.description;
@@ -20,7 +20,7 @@ export class Class {
     toJSON() {
       return {
         id: this.id,
-        userId: this.userId,
+        user_id: this.user_id,
         inviteCode: this.inviteCode,
         title: this.title,
         description: this.description,
