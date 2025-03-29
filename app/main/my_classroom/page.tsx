@@ -79,7 +79,7 @@ export default function MyClassroomPage() {
 
             <div className="flex flex-wrap gap-6 ml-5">
                 {classes?.map((cls, index) => (
-                    <Link href='/main/my_classroom/classroom' key={index}>
+                    <Link href={`/main/my_classroom/${cls.id}/classroom`} key={index}>
                         <div >
                             <Card image={"/images/image.jpg"} title={cls.title} description={cls.description}></Card>
                         </div>
