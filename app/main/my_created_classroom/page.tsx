@@ -2,43 +2,41 @@
 
 import CopyCard from "@/components/CopyCard";
 import ModalCreateClassroom from "@/components/modals/classroom/Create";
+import { Class } from "@/models/Class";
+import { User } from "@/models/User";
+import { ClassService } from "@/services/classServices";
+import { UserService } from "@/services/userService";
 import { BookOpen, Code, Database, Palette } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const courses = [
-    {
-        title: "UX/UI Design Bootcamp",
-        description: "เรียนออกแบบ UX/UI ตั้งแต่พื้นฐานจนถึงขั้นสูง",
-        image: "/images/image.jpg",
-        icon: <Palette size={24} />,
-    },
-    {
-        title: "Data Analytics with Python",
-        description: "วิเคราะห์ข้อมูลด้วย Python และเครื่องมือต่าง ๆ",
-        image: "/images/image.jpg",
-        icon: <Database size={24} />,
-    },
-    {
-        title: "Fundamental Web Dev",
-        description: "HTML5 และ CSS3 สำหรับมือใหม่",
-        image: "/images/image.jpg",
-        icon: <Code size={24} />,
-    },
-    {
-        title: "Introduction to JavaScript",
-        description: "พื้นฐานการเขียนโปรแกรมด้วย JavaScript",
-        image: "/images/image.jpg",
-        icon: <Code size={24} />,
-    },
-    {
-        title: "Web App Development with Node.js",
-        description: "เรียนรู้ Node.js และ Express",
-        image: "/images/image.jpg",
-        icon: <BookOpen size={24} />,
-    },
-];
 
 export default function MyCreatedClassroomPage() {
+    const [user, setUser] = useState<User | null>(null);
+    const [classes, setClasses] = useState<Class[] | null>(null);
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                //localStorage จากที่เก็บ userId ในหน้า Login
+                const userId = JSON.parse(localStorage.getItem('user') || 'null');
+                if (!userId) {
+                    console.error('User ID not found in localStorage');
+                    return;
+                }
+
+                const userFetch = await UserService.getUserById(userId)
+                const data = await ClassService.getOwnedClass(userFetch.id);
+                setClasses(data);
+                setUser(user)
+            } catch (error: any) {
+                const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+                console.error('Error fetching users:', errorMessage);
+            }
+        }
+
+        fetchUsers();
+    }, []);
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -48,27 +46,27 @@ export default function MyCreatedClassroomPage() {
 
                 <div className="flex gap-3">
 
-                <button
-                    className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Create New Classroom
-                </button>
+                    <button
+                        className="bg-gray-500 hover:bg-gray-800 p-5 h-fit rounded-xl text-white shadow-2xl"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Create New Classroom
+                    </button>
                 </div>
             </div>
 
-            {courses.length === 0 ? (
+            {classes?.length === 0 ? (
                 <div className="flex items-center justify-center h-64 text-xl text-gray-500">
-                No classroom found
+                    No classroom found
                 </div>
             ) : (
                 <div className="flex flex-wrap gap-6 ml-5 mt-5">
-                {courses.map((course, index) => (
+                    {classes?.map((cls, index) => (
                     <CopyCard
-                    key={index}
-                    image={course.image}
-                    title={course.title}
-                    description={course.description}
+                        key={index}
+                        image={"/images/image.jpg"}
+                        title={cls.title}
+                        description={cls.description}
                     />
                 ))}
                 </div>
