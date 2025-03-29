@@ -20,5 +20,6 @@ export interface ClassTypesUpdate {
     description: string;
     accessibility: string;
   }
+  
 
 
