@@ -50,7 +50,7 @@ export default function ModalCreateClassroom({ isOpen, onClose }: ModalProps) {
 
     if (!isOpen) return null;
 
-    const handleSave = async () => {
+    const handleSave = () => {
         let newErrors: { classroomName?: string; description?: string } = {};
 
         if (!classroomName.trim()) newErrors.classroomName = "Classroom name is required.";

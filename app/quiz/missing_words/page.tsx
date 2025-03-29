@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import ReportSuccess from '@/components/modals/report/ReportSuccess';
 import ReportFail from '@/components/modals/report/ReportFail';
 
-export default function OrderingQuestion() {
+export default function MissingWordsPage() {
     const [question, setQuestion] = useState('');
     const [questionImage, setQuestionImage] = useState<string | null>(null);
-    const [answers, setAnswers] = useState<string[]>(['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4']);
+    const [missingWord, setMissingWord] = useState('');
+    const [answer, setAnswer] = useState('');
     const [answerImage, setAnswerImage] = useState<string | null>(null);
     const [answerDescription, setAnswerDescription] = useState('');
-    const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailRequired, setShowFailRequired] = useState(false);
     const [showFailSave, setShowFailSave] = useState(false);
-    const [errors, setErrors] = useState<{ question?: string; answers?: string }>({});
+    const [errors, setErrors] = useState<{ question?: string; missingWord?: string; answer?: string }>({});
 
     const handleImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -27,31 +27,12 @@ export default function OrderingQuestion() {
         }
     };
 
-    const handleDragStart = (index: number) => {
-        setDraggingIndex(index);
-    };
-
-    const handleDragOver = (index: number, event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        if (draggingIndex === null || draggingIndex === index) return;
-
-        const newOrder = [...answers];
-        const draggedItem = newOrder.splice(draggingIndex, 1)[0];
-        newOrder.splice(index, 0, draggedItem);
-
-        setDraggingIndex(index);
-        setAnswers(newOrder);
-    };
-
-    const handleDrop = () => {
-        setDraggingIndex(null);
-    };
-
     const validateForm = () => {
-        let newErrors: { question?: string; answers?: string } = {};
+        let newErrors: { question?: string; missingWord?: string; answer?: string } = {};
 
         if (!question.trim()) newErrors.question = 'Question is required';
-        if (answers.length < 1) newErrors.answers = 'At least one answer is required';
+        if (!missingWord.trim()) newErrors.missingWord = 'Missing word is required';
+        if (!answer.trim()) newErrors.answer = 'Answer is required';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -87,8 +68,9 @@ export default function OrderingQuestion() {
 
     return (
         <div className="ml-60 mt-4 p-6 mr-5">
+            {/* Buttons aligned to the right */}
             <div className='flex justify-end gap-3 mb-3'>
-            <button 
+                <button 
                     className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
                     onClick={() => {}}>
                     Edit
@@ -99,14 +81,14 @@ export default function OrderingQuestion() {
                     onClick={handleSave}>
                     Save
                 </button>
-                
+
                 <button 
                     className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md"
                     onClick={handleSubmit}>
                     Submit
                 </button>
             </div>
-
+            
             <input
                 type="text"
                 placeholder="Write your question"
@@ -132,22 +114,30 @@ export default function OrderingQuestion() {
                 )}
             </div>
 
-            <div className="space-y-2">
-                {answers.map((answer, index) => (
-                    <div
-                        key={index}
-                        draggable
-                        onDragStart={() => handleDragStart(index)}
-                        onDragOver={(e) => handleDragOver(index, e)}
-                        onDrop={handleDrop}
-                        className={`border rounded p-2 shadow cursor-pointer transition-colors 
-                        ${draggingIndex === index ? 'bg-red-500 text-white' : 'bg-white'}`}
-                    >
-                        {answer}
-                    </div>
-                ))}
+            <input
+                type="text"
+                placeholder="Write down the missing words."
+                value={missingWord}
+                onChange={(e) => setMissingWord(e.target.value)}
+                className={`w-full border rounded p-2 mb-2 ${errors.missingWord ? 'border-red-500' : ''}`}
+            />
+            {errors.missingWord && <p className="text-red-500 text-sm">{errors.missingWord}</p>}
+
+            <div className='flex justify-end'>
+                <button className="border rounded px-4 py-1 text-gray-700 hover:text-white hover:bg-gray-600">
+                    Confirm
+                </button>
             </div>
-            {errors.answers && <p className="text-red-500 text-sm mt-1">{errors.answers}</p>}
+
+            <p className="mt-4 font-bold">Answer:</p>
+            <input
+                type="text"
+                placeholder="Answer"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className={`border rounded p-2 w-full ${errors.answer ? 'border-red-500' : ''}`}
+            />
+            {errors.answer && <p className="text-red-500 text-sm">{errors.answer}</p>}
 
             <p className="mt-4 font-bold">Answer Description</p>
 

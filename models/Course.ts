@@ -1,7 +1,7 @@
 import { CourseTypesResponse } from "@/types/courseTypes";
 
 export class Course {
-    id:number;
+    id:string;
     classId: string;
     title: string;
     description: string;

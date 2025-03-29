@@ -14,10 +14,15 @@ export interface ClassTypesCreate {
 }
 
 export interface ClassTypesUpdate {
-  id: number;
-  title: string;
-  description: string;
-  accessibility: string;
-}
+    id:string;
+    user_id: string;
+    inviteCode: string;
+    title: string;
+    description: string;
+    accessibility: string;
+  }
+
+
+  
 
 

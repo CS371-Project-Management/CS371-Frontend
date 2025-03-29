@@ -1,21 +1,21 @@
 'use client';
 
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 import ReportSuccess from '@/components/modals/report/ReportSuccess';
 import ReportFail from '@/components/modals/report/ReportFail';
 
-export default function OrderingQuestion() {
+export default function SingleChoicePage() {
     const [question, setQuestion] = useState('');
     const [questionImage, setQuestionImage] = useState<string | null>(null);
-    const [answers, setAnswers] = useState<string[]>(['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4']);
+    const [answers, setAnswers] = useState(['', '', '', '']);
+    const [correctAnswerIndex, setCorrectAnswerIndex] = useState<number | null>(null);
     const [answerImage, setAnswerImage] = useState<string | null>(null);
     const [answerDescription, setAnswerDescription] = useState('');
-    const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-
+    const [errors, setErrors] = useState<{ question?: string; correctAnswer?: string }>({});
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailRequired, setShowFailRequired] = useState(false);
     const [showFailSave, setShowFailSave] = useState(false);
-    const [errors, setErrors] = useState<{ question?: string; answers?: string }>({});
 
     const handleImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -27,48 +27,16 @@ export default function OrderingQuestion() {
         }
     };
 
-    const handleDragStart = (index: number) => {
-        setDraggingIndex(index);
-    };
-
-    const handleDragOver = (index: number, event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        if (draggingIndex === null || draggingIndex === index) return;
-
-        const newOrder = [...answers];
-        const draggedItem = newOrder.splice(draggingIndex, 1)[0];
-        newOrder.splice(index, 0, draggedItem);
-
-        setDraggingIndex(index);
-        setAnswers(newOrder);
-    };
-
-    const handleDrop = () => {
-        setDraggingIndex(null);
+    const handleAnswerChange = (index: number, value: string) => {
+        setAnswers((prev) => prev.map((ans, i) => (i === index ? value : ans)));
     };
 
     const validateForm = () => {
-        let newErrors: { question?: string; answers?: string } = {};
-
+        const newErrors: { question?: string; correctAnswer?: string } = {};
         if (!question.trim()) newErrors.question = 'Question is required';
-        if (answers.length < 1) newErrors.answers = 'At least one answer is required';
-
+        if (correctAnswerIndex === null) newErrors.correctAnswer = 'A correct answer must be selected';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = () => {
-        if (!validateForm()) {
-            setShowFailRequired(true);
-            return;
-        }
-
-        const saveSuccessful = Math.random() > 0.5;
-        if (saveSuccessful) {
-            setShowSuccess(true);
-        } else {
-            setShowFailSave(true);
-        }
     };
 
     const handleSave = () => {
@@ -76,35 +44,15 @@ export default function OrderingQuestion() {
             setShowFailRequired(true);
             return;
         }
-
-        const saveSuccessful = Math.random() > 0.5;
-        if (saveSuccessful) {
-            setShowSuccess(true);
-        } else {
-            setShowFailSave(true);
-        }
+        Math.random() > 0.5 ? setShowSuccess(true) : setShowFailSave(true);
     };
 
     return (
         <div className="ml-60 mt-4 p-6 mr-5">
             <div className='flex justify-end gap-3 mb-3'>
-            <button 
-                    className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                    onClick={() => {}}>
-                    Edit
-                </button>
-
-                <button 
-                    className="h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                    onClick={handleSave}>
-                    Save
-                </button>
-                
-                <button 
-                    className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md"
-                    onClick={handleSubmit}>
-                    Submit
-                </button>
+                <button className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md">Edit</button>
+                <button className="h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onClick={handleSave}>Save</button>
+                <button className="h-fit bg-green-400 hover:bg-green-600 text-white px-4 py-2 rounded-md">Submit</button>
             </div>
 
             <input
@@ -112,7 +60,7 @@ export default function OrderingQuestion() {
                 placeholder="Write your question"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                className={`w-full border rounded p-2 mb-2 ${errors.question ? 'border-red-500' : ''}`}
+                className={`w-full border rounded p-2 mb-4 ${errors.question ? 'border-red-500' : ''}`}
             />
             {errors.question && <p className="text-red-500 text-sm">{errors.question}</p>}
 
@@ -121,47 +69,40 @@ export default function OrderingQuestion() {
                     <img src={questionImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
                 ) : (
                     <label className="cursor-pointer text-center text-gray-600">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e, setQuestionImage)}
-                            className="hidden"
-                        />
+                        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, setQuestionImage)} className="hidden" />
                         <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
                     </label>
                 )}
             </div>
 
-            <div className="space-y-2">
-                {answers.map((answer, index) => (
-                    <div
-                        key={index}
-                        draggable
-                        onDragStart={() => handleDragStart(index)}
-                        onDragOver={(e) => handleDragOver(index, e)}
-                        onDrop={handleDrop}
-                        className={`border rounded p-2 shadow cursor-pointer transition-colors 
-                        ${draggingIndex === index ? 'bg-red-500 text-white' : 'bg-white'}`}
-                    >
-                        {answer}
-                    </div>
-                ))}
-            </div>
-            {errors.answers && <p className="text-red-500 text-sm mt-1">{errors.answers}</p>}
+            {/* Single-choice radio buttons */}
+            {answers.map((answer, index) => (
+                <div key={index} className="flex items-center mb-2">
+                    <input
+                        type="radio"
+                        name="correctAnswer"
+                        checked={correctAnswerIndex === index}
+                        onChange={() => setCorrectAnswerIndex(index)} // Update the correct answer
+                        className="mr-2"
+                    />
+                    <input
+                        type="text"
+                        placeholder={`Answer ${index + 1}`}
+                        value={answer}
+                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                        className="border rounded p-2 w-full"
+                    />
+                </div>
+            ))}
+            {errors.correctAnswer && <p className="text-red-500 text-sm">{errors.correctAnswer}</p>}
 
             <p className="mt-4 font-bold">Answer Description</p>
-
             <div className="w-full bg-gray-200 h-48 flex items-center justify-center rounded mb-4 relative">
                 {answerImage ? (
                     <img src={answerImage} alt="Uploaded" className="w-full h-full object-cover rounded" />
                 ) : (
                     <label className="cursor-pointer text-center text-gray-600">
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(e, setAnswerImage)}
-                            className="hidden"
-                        />
+                        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, setAnswerImage)} className="hidden" />
                         <p className='border border-2 p-4 rounded-xl'>📷 Upload Reference Image (Optional)</p>
                     </label>
                 )}
@@ -174,20 +115,19 @@ export default function OrderingQuestion() {
                 className="w-full border rounded p-2 h-32"
             />
 
+            {/* Modals for success/failure */}
             <ReportSuccess 
                 isOpen={showSuccess} 
                 onClose={() => setShowSuccess(false)} 
                 title="Your answer has been saved successfully!" 
                 press="OK" 
             />
-
             <ReportFail 
                 isOpen={showFailRequired} 
                 onClose={() => setShowFailRequired(false)} 
-                title="Required fields are missing!" 
+                title="Please complete all required fields." 
                 press="OK" 
             />
-
             <ReportFail 
                 isOpen={showFailSave} 
                 onClose={() => setShowFailSave(false)} 

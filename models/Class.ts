@@ -1,7 +1,8 @@
 import { ClassTypesResponse } from "@/types/classTypes";
 
 export class Class {
-    id:number;
+    id:string;
+    user_id: string;
     inviteCode: string;
     title: string;
     description: string;
@@ -9,6 +10,7 @@ export class Class {
   
     constructor(data: ClassTypesResponse) {
     this.id = data.id;
+    this.user_id = data.user_id;
     this.inviteCode = data.inviteCode;
     this.title = data.title;
     this.description = data.description;
@@ -18,6 +20,7 @@ export class Class {
     toJSON() {
       return {
         id: this.id,
+        user_id: this.user_id,
         inviteCode: this.inviteCode,
         title: this.title,
         description: this.description,
