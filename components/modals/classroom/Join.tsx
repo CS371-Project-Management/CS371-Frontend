@@ -1,28 +1,30 @@
 import { useState } from "react";
-import { Course } from "@/interfaces/course";
 import Image from "next/image";
 import ReportSuccess from "../report/ReportSuccess";
 import ReportFail from "../report/ReportFail";
+import { ClassService } from "@/services/classServices";
+import { Class } from "@/models/Class";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    selectedCourse: Course | null;
+    selectedClass: Class | null;
 }
     
-export default function ModalJoinClassroom({ isOpen, onClose, selectedCourse }: ModalProps) {
+export default function ModalJoinClassroom({ isOpen, onClose, selectedClass }: ModalProps) {
     if (!isOpen) return null;
-    if (!selectedCourse) return null;
+    if (!selectedClass) return null;
 
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
 
-    const handleJoin = () => {
-        const success = false;
-        if (success) {
+    const handleJoin = async () => {
+        try {
+            const response = await ClassService.joinPublicClass(selectedClass.id.toString());
             setShowSuccess(true);
-        } else {
+        } catch(error) {
             setShowFailure(true);
+            console.log(error)
         }
     };
 
@@ -38,8 +40,8 @@ export default function ModalJoinClassroom({ isOpen, onClose, selectedCourse }: 
 
                 <div className="flex flex-between h-50 max-w-150">
                     <Image
-                        src={selectedCourse.image}
-                        alt={selectedCourse.title}
+                        src={"/images/image.png"}
+                        alt={selectedClass.title}
                         width={300}
                         height={150}
                         className="rounded-lg"
@@ -47,8 +49,8 @@ export default function ModalJoinClassroom({ isOpen, onClose, selectedCourse }: 
                     
                     <div className='flex flex-col justify-between ml-6 mr-1'>
                         <div>
-                            <h2 className="text-xl font-semibold mt-4">{selectedCourse.title}</h2>
-                            <p className="text-gray-600">{selectedCourse.description}</p>
+                            <h2 className="text-xl font-semibold mt-4">{selectedClass.title}</h2>
+                            <p className="text-gray-600">{selectedClass.description}</p>
                         </div>
 
                         <div className='flex justify-end'>
