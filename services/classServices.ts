@@ -23,6 +23,7 @@ export class ClassService {
       static async getAllClasses(): Promise<Class[]> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse[]>(`/classes`, { withCredentials: true });
+            console.log(response.data)
             return response.data?.map((classroomData: ClassTypesResponse) => Class.fromResponse(classroomData));
         } catch (error:any) {
             if (error.response) {

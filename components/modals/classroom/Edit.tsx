@@ -9,6 +9,7 @@ import { User } from "@/models/User";
 import { UserService } from "@/services/userService";
 import { ClassService } from "@/services/classServices";
 import { Class } from "@/models/Class";
+import { pre } from "framer-motion/client";
 
 interface ModalProps {
     isOpen: boolean;
@@ -19,8 +20,7 @@ interface ModalProps {
 export default function ModalEditClassroom({ isOpen, onClose, cls }: ModalProps) {
     const [classroomName, setClassroomName] = useState(cls.title);
     const [description, setDescription] = useState(cls.description);
-    const [isPrivate, setIsPrivate] = useState(false);
-
+    const [isPrivate, setIsPrivate] = useState<boolean>(!cls.accessibility);
     const [errors, setErrors] = useState<{ classroomName?: string; description?: string }>({});
 
     const [showSuccess, setShowSuccess] = useState(false);
@@ -28,7 +28,7 @@ export default function ModalEditClassroom({ isOpen, onClose, cls }: ModalProps)
     const [showFailRandom, setShowFailRandom] = useState(false);
 
     const [user, setUser] = useState<User | null>(null);
-
+    console.log(cls)
     useEffect(() => {
         async function fetchUsers() {
             try {
@@ -127,7 +127,7 @@ export default function ModalEditClassroom({ isOpen, onClose, cls }: ModalProps)
                             <input
                                 type="checkbox"
                                 checked={isPrivate}
-                                onChange={() => setIsPrivate(!isPrivate)}
+                                onChange={() => setIsPrivate(prev => !prev)}
                                 className="hidden"
                             />
                             <div
