@@ -7,12 +7,14 @@ import { User } from "@/models/User";
 import { ClassService } from "@/services/classServices";
 import { UserService } from "@/services/userService";
 import { BookOpen, Code, Database, Palette } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
 export default function MyCreatedClassroomPage() {
     const [user, setUser] = useState<User | null>(null);
     const [classes, setClasses] = useState<Class[] | null>(null);
+    const router = useRouter();
     useEffect(() => {
         async function fetchUsers() {
             try {
@@ -62,13 +64,14 @@ export default function MyCreatedClassroomPage() {
             ) : (
                 <div className="flex flex-wrap gap-6 ml-5 mt-5">
                     {classes?.map((cls, index) => (
-                    <CopyCard
-                        key={index}
-                        image={"/images/image.jpg"}
-                        title={cls.title}
-                        description={cls.description}
-                    />
-                ))}
+                        <div key={index} onClick={() => router.push(`/main/my_classroom/${cls.id}/classroom`)}>
+                            <CopyCard
+                                image={"/images/image.jpg"}
+                                title={cls.title}
+                                description={cls.description}
+                            />
+                        </div>
+                    ))}
                 </div>
             )}
 

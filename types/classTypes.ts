@@ -16,10 +16,9 @@ export interface ClassTypesCreate {
 export interface ClassTypesUpdate {
     id:string;
     user_id: string;
-    inviteCode: string;
     title: string;
     description: string;
-    accessibility: string;
+    accessibility: "0" | "1";
   }
 
 

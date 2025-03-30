@@ -111,11 +111,13 @@ export default function ClassroomPage() {
                 isOpen={isLeaveClassroom}
                 onClose={() => { setIsLeaveClassroom(false) }}>
             </ModalLeaveClassroom>
-
-            <ModalEditClassroom
+            {cls ? <ModalEditClassroom
                 isOpen={isEditClassroom}
-                onClose={() => { setIsEditClassroom(false) }}>
-            </ModalEditClassroom>
+                onClose={() => { setIsEditClassroom(false) }}
+                cls={cls}
+            >
+            </ModalEditClassroom> : null}
+
 
             <ModalDeleteClassroom
                 isOpen={isDeleteClassroom}
