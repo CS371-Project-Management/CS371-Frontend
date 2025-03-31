@@ -25,6 +25,8 @@ function addAuthToken(
     return config;
 }
 
+
 axiosInstance.interceptors.request.use(addAuthToken);
+
 
 export default axiosInstance;

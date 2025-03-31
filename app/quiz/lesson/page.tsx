@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import { Trash } from 'lucide-react';
 import ReportSuccess from '@/components/modals/report/ReportSuccess';
 import ReportFail from '@/components/modals/report/ReportFail';
 
-export default function QuizLessonPage() {
+export default function LessonPage() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
@@ -46,13 +46,34 @@ export default function QuizLessonPage() {
         }
     };
 
+    const handleSave = () => {
+        if (!validateForm()) {
+            setShowFailRequired(true);
+            return;
+        }
+
+        const saveSuccessful = Math.random() > 0.5;
+        if (saveSuccessful) {
+            setShowSuccess(true);
+        } else {
+            setShowFailSave(true);
+        }
+    };
+
     return (
         <div className="ml-60 mt-4 p-6 mr-5">
-            <div className='flex gap-3 mb-3'>
+            {/* Buttons aligned to the right */}
+            <div className='flex justify-end gap-3 mb-3'>
                 <button 
                     className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
                     onClick={() => {}}>
                     Edit
+                </button>
+
+                <button 
+                    className="h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={handleSave}>
+                    Save
                 </button>
 
                 <button 
