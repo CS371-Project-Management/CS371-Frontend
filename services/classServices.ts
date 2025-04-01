@@ -104,11 +104,16 @@ export class ClassService {
         }
     }
     
-    static async getOwnedClass(user_id:string): Promise<Class[]> {
+    static async getOwnedClass(user_id: string): Promise<Class[]> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse[]>(`/classes/owned/${user_id}`, { withCredentials: true });
-            return response.data.map((classroomData: ClassTypesResponse) => Class.fromResponse(classroomData));
-        } catch (error:any) {
+    
+            console.log("Response data:", response.data);
+    
+            return response.data.map((classroomData: ClassTypesResponse) => 
+                Class.fromResponse(classroomData)
+            );
+        } catch (error: any) {
             if (error.response) {
                 throw new Error(`Failed to fetch classes: ${error.response.data.message || 'Unknown error'}`);
             } else {
@@ -117,6 +122,7 @@ export class ClassService {
             }
         }
     }
+    
 
     static async getUserByClassId(class_id:string): Promise<User[]> {
         try {

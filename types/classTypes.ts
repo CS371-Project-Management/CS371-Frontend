@@ -1,5 +1,5 @@
 export interface ClassTypesResponse {
-  id: number;
+  id: string;
   inviteCode: string;
   title: string;
   description: string;

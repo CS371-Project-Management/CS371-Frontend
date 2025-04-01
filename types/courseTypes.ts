@@ -3,15 +3,24 @@ export interface CourseTypesResponse {
     classId: string,
     title: string;
     description: string;
-    difficultyLevel: string;
+    difficulty_level: string;
     number: number;
   }
 
 export interface CourseTypesCreate{
-    classId: string;
-    title:string;
-    description: string;
-    DifficultyLevel: string;
-    number: number;
+  class_id: string;
+  title: string;
+  description: string;
+  difficulty_level: string;
+  number: number;
 }
+
+export interface CourseTypesUpdate{
+  title: string,
+  description: string,
+  difficulty_level: string,
+  number : number
+}
+
+
 

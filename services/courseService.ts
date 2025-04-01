@@ -1,10 +1,19 @@
 import axiosInstance from "@/lib/api";
 import { Course } from "@/models/Course";
-import { CourseTypesCreate, CourseTypesResponse } from "@/types/courseTypes";
+import { ClassTypesResponse } from "@/types/classTypes";
+import { CourseTypesCreate, CourseTypesResponse, CourseTypesUpdate } from "@/types/courseTypes";
 
 export class CourseService {
       
-    
+        //success
+        // {
+        //     "class_id": "f8faf4f0-09cb-11f0-9cd2-0242ac120002",
+        //     "title": "Math",
+        //     "description": "Mathematics",
+        //     "difficulty_level": "medium",
+        //     "number" : 1
+        //   }
+          
       static async createCourse(course: CourseTypesCreate): Promise<any> {
         try {
           await axiosInstance.post("/courses", course);
@@ -16,7 +25,7 @@ export class CourseService {
         }
       }
 
-     
+      //success
       static async getCourseByClassId(id: string): Promise<Course[]> {
         try {
             const response = await axiosInstance.get<CourseTypesResponse[]>(`/courses/class/${id}`, { withCredentials: true });
@@ -31,15 +40,28 @@ export class CourseService {
         }
     }
 
-    static async updateCourse(id: string, course:Course): Promise<Course>{
-        try{
-            const reponse = await axiosInstance.put<CourseTypesResponse>(`/courses/${id}`, course.toJSON(),{withCredentials:true});
-            return Course.fromResponse(reponse.data);
-        }catch(error){
-            throw new Error('Failed to update couese.');
+    //X
+    static async updateCourse(id: string, course: Course): Promise<any> {
+        try {
+            const courseUpdate: CourseTypesUpdate = {
+                title: course.title,
+                description: course.description,
+                difficulty_level: course.difficultyLevel,
+                number: course.number,
+            };
+    
+            const response = await axiosInstance.put<CourseTypesResponse>(
+                `/courses/${id}`, 
+                courseUpdate,       
+                { withCredentials: true }
+            );
+        } catch (error: any) {
+            // แสดงข้อความข้อผิดพลาดที่ชัดเจนขึ้น
+            console.error("Error updating course:", error);
+            throw new Error('Failed to update course.');
         }
     }
-
+    //X
     static async deleteCourse(id: string): Promise<void>{
         try {
             await axiosInstance.delete(`/coueses/${id}`, {withCredentials:true});
