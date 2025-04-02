@@ -2,23 +2,29 @@
 
 import { useState } from "react";
 import ReportFail from "@/components/modals/report/ReportFail";
+import { Class } from "@/models/Class";
+import { ClassService } from "@/services/classServices";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  cls : Class;
+  user_id : string;
 }
 
-export default function ModalDeleteClassroom({ isOpen, onClose }: ModalProps) {
+export default function ModalDeleteClassroom({ isOpen, onClose, cls, user_id }: ModalProps) {
   const [showFail, setShowFail] = useState(false);
-
+  console.log(cls, user_id);
   if (!isOpen) return null;
 
-  const handleDelete = () => {
-    const deleteSuccess = Math.random() > 0.5;
-    if (!deleteSuccess) {
-      setShowFail(true);
-    } else {
+  const handleDelete = async () => {
+    try {
+      const response = await ClassService.deleteClass(cls.id);
+      console.log(response);
       onClose();
+    } catch(error) {  
+      setShowFail(true);
+      console.log(error);
     }
   };
 

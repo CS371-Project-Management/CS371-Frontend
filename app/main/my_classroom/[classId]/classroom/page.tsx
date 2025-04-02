@@ -5,7 +5,9 @@ import ModalEditClassroom from '@/components/modals/classroom/Edit';
 import ModalLeaveClassroom from '@/components/modals/classroom/Leave';
 import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import { Class } from '@/models/Class';
+import { User } from '@/models/User';
 import { ClassService } from '@/services/classServices';
+import { UserService } from '@/services/userService';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -17,26 +19,37 @@ export default function ClassroomPage() {
     const [isEditClassroom, setIsEditClassroom] = useState(false);
     const [isDeleteClassroom, setIsDeleteClassroom] = useState(false);
     const [cls, setCls] = useState<Class | null>(null)
+    const [user, setUser] = useState<User>();
 
     useEffect(() => {
-        async function fetchClass() {
+        async function fetchData() {
             try {
-                const response = await ClassService.getClassById(classId);
-                setCls(response);
-            } catch (error) {
-                console.log(error)
+                const userId = typeof window !== "undefined" ? JSON.parse(localStorage.getItem('user') || 'null') : null;
+                if (!userId) {
+                    console.error('User ID not found in localStorage');
+                    return;
+                }
+    
+                const [userFetch, classFetch] = await Promise.all([
+                    UserService.getUserById(userId),
+                    ClassService.getClassById(classId),
+                ]);
+                setUser(userFetch);
+                setCls(classFetch);
+            } catch (error: any) {
+                console.error('Error fetching data:', error.message);
             }
-
         }
-
-        fetchClass();
-    }, []);
+    
+        fetchData();
+    }, [classId]);
+    
 
     return (
         <div className="min-h-screen bg-white">
             {cls ?
                 <>
-                    <NavbarClassroom></NavbarClassroom>
+                    <NavbarClassroom classId={classId}></NavbarClassroom>
 
                     <div className="p-4">
                         <div className="flex justify-between m-10 rounded-md">
@@ -111,15 +124,20 @@ export default function ClassroomPage() {
                 isOpen={isLeaveClassroom}
                 onClose={() => { setIsLeaveClassroom(false) }}>
             </ModalLeaveClassroom>
-
-            <ModalEditClassroom
+            {cls ? <ModalEditClassroom
                 isOpen={isEditClassroom}
-                onClose={() => { setIsEditClassroom(false) }}>
-            </ModalEditClassroom>
+                onClose={() => { setIsEditClassroom(false) }}
+                cls={cls}
+            >
+            </ModalEditClassroom> : null}
+
 
             <ModalDeleteClassroom
                 isOpen={isDeleteClassroom}
-                onClose={() => { setIsDeleteClassroom(false) }}>
+                onClose={() => { setIsDeleteClassroom(false) }} 
+                cls={cls}
+                user_id = {user?.id}
+            >
             </ModalDeleteClassroom>
         </div>
     );

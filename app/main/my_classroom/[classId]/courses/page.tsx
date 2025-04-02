@@ -5,6 +5,7 @@ import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import ModalCreateCourse from '@/components/modals/course/Create';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 const courses = [
@@ -40,10 +41,11 @@ const courses = [
 
 export default function CoursePage() {
     const [isCreateCourse, setIsCreateCourse] = useState(false);
+    const { classId } = useParams();
 
     return (
         <div className="min-h-screen bg-white">
-            <NavbarClassroom />
+            <NavbarClassroom classId={classId}/>
 
             <div className="flex justify-between ml-20 mt-20 mr-20 mb-15">
                 <h2 className="text-3xl font-bold">All Courses</h2>

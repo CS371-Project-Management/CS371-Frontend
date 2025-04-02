@@ -6,7 +6,7 @@ export class Class {
     inviteCode: string;
     title: string;
     description: string;
-    accessibility: string;
+    accessibility: boolean;
   
     constructor(data: ClassTypesResponse) {
     this.id = data.id;

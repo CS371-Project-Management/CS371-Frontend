@@ -29,7 +29,7 @@ export default function MyClassroomPage() {
                 const userFetch = await UserService.getUserById(userId)
                 const data = await ClassService.getClassUserJoinByUserID(userFetch.id);
                 setClasses(data);
-                setUser(user)
+                setUser(userFetch)
             } catch (error: any) {
                 const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
                 console.error('Error fetching users:', errorMessage);
