@@ -23,7 +23,6 @@ export class ClassService {
       static async getAllClasses(): Promise<Class[]> {
         try {
             const response = await axiosInstance.get<ClassTypesResponse[]>(`/classes`, { withCredentials: true });
-            console.log(response.data)
             return response.data?.map((classroomData: ClassTypesResponse) => Class.fromResponse(classroomData));
         } catch (error:any) {
             if (error.response) {
@@ -96,13 +95,15 @@ export class ClassService {
             throw new Error('Failed to leave class.')
         }
     }
+    
     //success
-    static async deleteClass(user_id: string, class_id: string): Promise<void> {
+    static async deleteClass(class_id: string): Promise<void> {
         try {
-            await axiosInstance.delete(`/classes/${class_id}/users/${user_id}`, { withCredentials: true });
+            await axiosInstance.delete(`/classes/${class_id}`, { withCredentials: true });
         } catch {
             throw new Error('Failed to delete class.');
         }
+
     }
     
     static async getOwnedClass(user_id:string): Promise<Class[]> {

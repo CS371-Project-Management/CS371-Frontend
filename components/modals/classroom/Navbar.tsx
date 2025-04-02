@@ -2,14 +2,21 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Class } from '@/models/Class';
 
-const navLinks = [
-    { name: 'Classroom', href: '/main/my_classroom/classroom' },
-    { name: 'Courses', href: '/main/my_classroom/courses' },
-    { name: 'Members', href: '/main/my_classroom/members' },
-];
 
-export default function NavbarClassroom() {
+
+type Params = {
+    classId : string;
+}
+
+export default function NavbarClassroom({classId} : Params) {
+    const navLinks = [
+        { name: 'Classroom', href: `/main/my_classroom/${classId}/classroom` },
+        { name: 'Courses', href: `/main/my_classroom/${classId}/courses` },
+        { name: 'Members', href: `/main/my_classroom/${classId}/members` },
+    ];
+
     const pathname = usePathname();
 
     return (

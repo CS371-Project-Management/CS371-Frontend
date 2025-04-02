@@ -4,6 +4,7 @@ import ModalDeleteUser from "@/components/modals/user/DeleteUser";
 import NavbarClassroom from "@/components/modals/classroom/Navbar";
 import Image from "next/image";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 const members = [
     {
@@ -34,10 +35,11 @@ const members = [
 
 export default function MemberPage() {
     const [isDeleteUser, setIsDeleteUser] = useState(false);
+    const { classId } = useParams();
 
     return (
         <div className="min-h-screen bg-white">
-            <NavbarClassroom />
+            <NavbarClassroom classId={classId}/>
 
             <div className="ml-20 mt-20 mb-15 text-3xl font-bold">
                 Members {members.length}
