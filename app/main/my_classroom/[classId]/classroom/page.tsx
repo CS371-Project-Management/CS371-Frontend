@@ -14,13 +14,13 @@ import { useEffect, useState } from 'react';
 
 export default function ClassroomPage() {
     const { classId } = useParams();
-    const [isPrivate, setIsPrivate] = useState(false);
     const [isLeaveClassroom, setIsLeaveClassroom] = useState(false);
     const [isEditClassroom, setIsEditClassroom] = useState(false);
     const [isDeleteClassroom, setIsDeleteClassroom] = useState(false);
     const [cls, setCls] = useState<Class | null>(null)
     const [user, setUser] = useState<User>();
-
+    const [inviteCode, setInviteCode] = useState("");
+    const [reveal, setReveal] = useState<boolean>(false)
     useEffect(() => {
         async function fetchData() {
             try {
@@ -29,21 +29,23 @@ export default function ClassroomPage() {
                     console.error('User ID not found in localStorage');
                     return;
                 }
-    
-                const [userFetch, classFetch] = await Promise.all([
+
+                const [userFetch, classFetch, inviteCode] = await Promise.all([
                     UserService.getUserById(userId),
                     ClassService.getClassById(classId),
+                    ClassService.getInviteCode(classId),
                 ]);
                 setUser(userFetch);
                 setCls(classFetch);
+                setInviteCode(inviteCode);
             } catch (error: any) {
                 console.error('Error fetching data:', error.message);
             }
         }
-    
+
         fetchData();
     }, [classId]);
-    
+
 
     return (
         <div className="min-h-screen bg-white">
@@ -70,20 +72,6 @@ export default function ClassroomPage() {
                                 </button>
 
                                 {/* <STAFF></STAFF> */}
-                                <div className='flex items-start gap-3 mt-2.5'>
-                                    <span className="text-md font-semibold">Private</span>
-                                    <label className="flex items-center cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={isPrivate}
-                                            onChange={() => setIsPrivate(!isPrivate)}
-                                            className="hidden"
-                                        />
-                                        <div className={`mt-0.5 w-11 h-5 flex items-center bg-blue-200 rounded-full p-1 transition-all ${isPrivate ? "bg-blue-700" : ""}`}>
-                                            <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-all ${isPrivate ? "translate-x-5" : ""}`}></div>
-                                        </div>
-                                    </label>
-                                </div>
 
                                 <button
                                     className="h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
@@ -113,6 +101,13 @@ export default function ClassroomPage() {
                                     {cls?.description}
                                 </p>
                             </div>
+
+                            <div className="group">
+                                <p onClick={() => setReveal(prev => !prev)} className="p-2 px-6 border-2 border-dashed border-blue-600 rounded-lg w-fit cursor-pointer">
+                                    {reveal ? inviteCode : "Click to see invite code"}
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 </> :
@@ -134,9 +129,9 @@ export default function ClassroomPage() {
 
             <ModalDeleteClassroom
                 isOpen={isDeleteClassroom}
-                onClose={() => { setIsDeleteClassroom(false) }} 
+                onClose={() => { setIsDeleteClassroom(false) }}
                 cls={cls}
-                user_id = {user?.id}
+                user_id={user?.id}
             >
             </ModalDeleteClassroom>
         </div>

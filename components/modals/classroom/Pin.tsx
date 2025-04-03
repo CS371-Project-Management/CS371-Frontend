@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReportSuccess from "../report/ReportSuccess";
 import ReportFail from "../report/ReportFail";
+import { ClassService } from "@/services/classServices";
 
 interface ModalProps {
     isOpen: boolean;
@@ -19,13 +20,12 @@ export default function ModalClassroomPin({ isOpen, onClose, errorType }: ModalP
         setPin(e.target.value);
     };
 
-    const handleJoinClassroom = () => {
-        if (pin === "1234") { // Example: correct PIN
-            setShowSuccess(true);
-        } else if (!pin) {
-            setShowFailure(true); // Show failure if no PIN entered
-        } else {
-            setShowFailure(true); // Show failure for incorrect PIN
+    const handleJoinClassroom = async () => {
+        try {
+            console.log(pin)
+            const reponse = await ClassService.joinPrivateClass(pin);
+        } catch(error) {
+
         }
     };
 
