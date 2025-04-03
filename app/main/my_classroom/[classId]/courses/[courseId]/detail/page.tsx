@@ -9,7 +9,7 @@ import ModalDeleteCourse from "@/components/modals/course/Delete";
 import ModalReportForSure from "@/components/modals/report/ForSure";
 import ReportFail from "@/components/modals/report/ReportFail";
 import ModalDeleteLesson from "@/components/modals/course/DeleteLesson";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { CourseService } from "@/services/courseService";
 import { Course } from "@/interfaces/course";
 
@@ -28,11 +28,14 @@ export default function DetailPage() {
     const [calcFail, setCalcFail] = useState(false);
     const [course, setCourse] = useState<Course>()
     const { courseId } = useParams();
+    const router = useRouter();
+    const pathName = usePathname();
+    const pathSegments = pathName.split("/");
+    pathSegments[pathSegments.length - 1] = ""; 
     useEffect(() => {
         const getCourse = async () => {
             const response = await CourseService.getCourseByCourseId(courseId);
             setCourse(response);
-            console.log(response)
         }
         getCourse();
     }, [])
@@ -85,6 +88,35 @@ export default function DetailPage() {
                     </p>
                 </div>
             </div>
+
+            {/* user render */}
+            {/* <div className="flex justify-end">
+                <button
+                    className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => {}}
+                >
+                    Submit all quizzes
+                </button>
+            </div> */}
+
+            {/* editor */}
+            <div className="flex gap-5 justify-end">
+                <button
+                    className="mt-5 h-fit bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer"
+                    onClick={() => {}}
+                >
+                    Insight
+                </button>
+
+                <button
+                    className="mt-5 h-fit bg-zinc-900 hover:bg-zinc-700 text-white px-4 py-2 rounded-md cursor-pointer"
+                    onClick={() => router.push(`${pathSegments.join("/")}/create_quiz`)}
+                >
+                    Create new quizz
+                </button>
+            </div>
+
+
 
             <div className="mt-6">
                 {lessons.length === 0 ? (
