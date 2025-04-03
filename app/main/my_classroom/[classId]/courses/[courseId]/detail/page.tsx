@@ -3,12 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalEditCourse from "@/components/modals/course/Edit";
 import ModalDeleteCourse from "@/components/modals/course/Delete";
 import ModalReportForSure from "@/components/modals/report/ForSure";
 import ReportFail from "@/components/modals/report/ReportFail";
 import ModalDeleteLesson from "@/components/modals/course/DeleteLesson";
+import { useParams } from "next/navigation";
+import { CourseService } from "@/services/courseService";
+import { Course } from "@/interfaces/course";
 
 const lessons = [
     { title: "Lesson 1", status: "completed" },
@@ -23,15 +26,17 @@ export default function DetailPage() {
     const [isDeleteLesson, setIsDeleteLesson] = useState(false);
     const [forSure, setForSure] = useState(false);
     const [calcFail, setCalcFail] = useState(false);
-
-    const handleSubmitAllQuizzes = () => {
-        const calculationSuccessful = Math.random() > 0.5; 
-        if (!calculationSuccessful) {
-            setCalcFail(true);
-        } else {
-            setForSure(true);
+    const [course, setCourse] = useState<Course>()
+    const { courseId } = useParams();
+    useEffect(() => {
+        const getCourse = async () => {
+            const response = await CourseService.getCourseByCourseId(courseId);
+            setCourse(response);
+            console.log(response)
         }
-    };
+        getCourse();
+    }, [])
+
 
     return (
         <div className="p-6 max-w-4xl mx-auto">
@@ -72,27 +77,18 @@ export default function DetailPage() {
                 </div>
 
                 <div className="w-1/2 h-1/2 bg-gray-100 p-4 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold">Course name</h2>
-                    <p className="text-gray-600">Lite : Fundamental Web Dev with HTML5</p>
+                    <h2 className="text-xl font-semibold">Course Name</h2>
+                    <p className="text-gray-600">{course?.title}</p>
                     <h3 className="text-md font-semibold mt-3">Description</h3>
                     <p className="text-gray-600">
-                        เรียนรู้พื้นฐานการสร้างเว็บไซต์ด้วย HTML5
+                        {course?.description}
                     </p>
                 </div>
             </div>
 
-            <div className="flex justify-end">
-                <button
-                    className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                    onClick={handleSubmitAllQuizzes}
-                >
-                    Submit all quizzes
-                </button>
-            </div>
-
             <div className="mt-6">
                 {lessons.length === 0 ? (
-                    <p className="text-center text-gray-500 text-lg">No lessons found</p>
+                    <p className="text-center text-gray-500 text-lg">No quizzes found</p>
                 ) : (
                     lessons.map((lesson, index) => (
                         <div
@@ -103,7 +99,7 @@ export default function DetailPage() {
                             <div className="flex gap-5">
                                 <button
                                     className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-                                    onClick={() => {}}
+                                    onClick={() => { }}
                                 >
                                     Edit
                                 </button>
@@ -123,6 +119,7 @@ export default function DetailPage() {
             <ModalEditCourse
                 isOpen={isEditCourse}
                 onClose={() => setIsEditCourse(false)}
+                course = {course}
             />
 
             <ModalDeleteCourse

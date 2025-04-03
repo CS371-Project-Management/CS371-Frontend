@@ -3,35 +3,43 @@
 import { useState } from "react";
 import { Upload } from "lucide-react";
 import ReportFail from "@/components/modals/report/ReportFail";
+import { CourseService } from "@/services/courseService";
+import { Course } from "@/models/Course";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
+    course: Course
 }
 
-export default function ModalEditCourse({ isOpen, onClose }: ModalProps) {
+const difficultyLevels = ["easy", "medium", "hard"];
+
+export default function ModalEditCourse({ isOpen, onClose, course }: ModalProps) {
     if (!isOpen) return null;
 
-    const [courseName, setCourseName] = useState("");
-    const [description, setDescription] = useState("");
-    const [isPrivate, setIsPrivate] = useState(false);
-    const [error, setError] = useState(""); 
+    const [courseName, setCourseName] = useState(course.title);
+    const [description, setDescription] = useState(course.description);
+    const [difficulty, setDifficulty] = useState<string>(course.difficulty_level);
+    const [number, setNumber] = useState(course.number);
+
+    const [error, setError] = useState("");
     const [isFail, setIsFail] = useState(false);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!courseName.trim() || !description.trim()) {
             setError("Please fill out all required fields.");
             return;
         }
-        setError("");
+        const req = new Course({
+            id: course.id,
+            class_id: course.class_id,
+            title: courseName,
+            description: description,
+            difficulty_level: difficulty.toLocaleLowerCase(),
+            number: number
+        })
+        const response = await CourseService.updateCourse(course.id, req);
 
-        const saveSuccessful = Math.random() > 0.5; 
-        if (!saveSuccessful) {
-            setIsFail(true);
-            return;
-        }
-
-        console.log("Saving course:", { courseName, description, isPrivate });
         onClose();
     };
 
@@ -46,21 +54,13 @@ export default function ModalEditCourse({ isOpen, onClose }: ModalProps) {
                     <label className="block text-sm font-bold mb-1">
                         Course name <span className="text-red-500">*</span>
                     </label>
-                    <input  
+                    <input
                         type="text"
                         value={courseName}
                         onChange={(e) => setCourseName(e.target.value)}
                         placeholder="Course name"
                         className="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-1">Cover Photo</label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-6 cursor-pointer hover:border-blue-500">
-                        <Upload className="w-8 h-8 text-gray-500" />
-                        <span className="text-gray-500 text-sm">Add cover photo</span>
-                    </div>
                 </div>
 
                 <div className="mb-4">
@@ -75,27 +75,36 @@ export default function ModalEditCourse({ isOpen, onClose }: ModalProps) {
                     ></textarea>
                 </div>
 
-                <div className="flex justify-end items-center gap-3 mb-4">
-                    <span className="text-sm font-semibold">Private</span>
-                    <label className="flex items-center cursor-pointer">
+                <div className="flex justify-between mb-4">
+                    <div>
+                        <label className="block text-sm font-bold mb-1">Difficulty Level</label>
+                        <select
+                            value={difficulty}
+                            onChange={(e) => setDifficulty(e.target.value)}
+                            className="text-sm w-full p-3 border rounded-lg focus:outline-none focus:ring-2 border-gray-300 focus:ring-blue-500"
+                        >
+                            {difficultyLevels.map((level) => (
+                                <option key={level} value={level}>{level.toLocaleUpperCase()}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold mb-1">Number of this course</label>
                         <input
-                            type="checkbox"
-                            checked={isPrivate}
-                            onChange={() => setIsPrivate(!isPrivate)}
-                            className="hidden"
+                            type="number"
+                            value={number}
+                            onChange={(e) => setNumber(Math.max(1, Number(e.target.value)))}
+                            className={`text-sm w-full p-2 border rounded-lg focus:outline-none focus:ring-2`}
                         />
-                        <div className={`w-11 h-5 flex items-center bg-blue-200 rounded-full p-1 transition-all ${isPrivate ? "bg-blue-700" : ""}`}>
-                            <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-all ${isPrivate ? "translate-x-5" : ""}`}></div>
-                        </div>
-                    </label>    
+                    </div>
                 </div>
 
                 <div className="flex justify-between">
                     <button onClick={onClose} className="px-4 py-2 bg-gray-200 text-black rounded-lg hover:bg-gray-300">
                         Cancel
                     </button>
-                    <button 
-                        onClick={handleSave} 
+                    <button
+                        onClick={handleSave}
                         className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
                     >
                         Save

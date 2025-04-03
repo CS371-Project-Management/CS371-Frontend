@@ -2,28 +2,28 @@ import { CourseTypesResponse } from "@/types/courseTypes";
 
 export class Course {
     id:string;
-    classId: string;
+    class_id: string;
     title: string;
     description: string;
-    difficultyLevel: string;
+    difficulty_level: string;
     number: number;
   
     constructor(data: CourseTypesResponse) {
      this.id = data.id;
-      this.classId = data.classId;
+      this.class_id = data.class_id;
       this.title = data.title;
       this.description = data.description;
-      this.difficultyLevel = data.difficultyLevel;
+      this.difficulty_level = data.difficulty_level;
       this.number = data.number;
     }
   
     toJSON() {
       return {
         id: this.id,
-        classId: this.classId,
+        class_id: this.class_id,
         title: this.title,
         description: this.description,
-        difficultyLevel: this.difficultyLevel,
+        difficulty_level: this.difficulty_level,
         number: this.number
       };
     }
