@@ -69,18 +69,19 @@ export class ClassService {
     static async joinPublicClass(class_id: string): Promise<void>{
         try{
             await axiosInstance.post(`/classes/${class_id}/join-public`, { withCredentials: true });
-
+            
         }catch{
             throw new Error('Failed to join class.')
         }
     }
     
-    static async joinPrivateClass(invite_code: string): Promise<void>{
+    static async joinPrivateClass(invite_code: string, user_id : string): Promise<any>{
         try{
-            const response = await axiosInstance.post(`/classes/join-private`,{withCredentials: true});
-            return response.data
 
+            await axiosInstance.post(`/classes/join-private`, JSON.stringify({invite_code : invite_code, user_id : user_id}), {withCredentials: true});
+            return "success";
         }catch{
+            return "fail"
             throw new Error('Failed to join class.')
         }
     }
