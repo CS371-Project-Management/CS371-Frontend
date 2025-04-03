@@ -16,6 +16,7 @@ export default function MyClassroomPage() {
     const [sortBy, setSortBy] = useState<'latest' | 'oldest'>('latest');
     const [user, setUser] = useState<User | null>(null);
     const [classes, setClasses] = useState<Class[] | null>(null);
+    
     useEffect(() => {
         async function fetchUsers() {
             try {
@@ -39,6 +40,8 @@ export default function MyClassroomPage() {
         fetchUsers();
     }, []);
 
+    // Filter classes based on isPublic state
+    const filteredClasses = classes?.filter(cls => cls.accessibility === isPublic) || [];
 
     return (
         <div className="m-10 ml-20 p-4">
@@ -78,9 +81,9 @@ export default function MyClassroomPage() {
             </div>
 
             <div className="flex flex-wrap gap-6 ml-5">
-                {classes?.map((cls, index) => (
+                {filteredClasses.map((cls, index) => (
                     <Link href={`/main/my_classroom/${cls.id}/classroom`} key={index}>
-                        <div >
+                        <div>
                             <Card image={"/images/image.jpg"} title={cls.title} description={cls.description}></Card>
                         </div>
                     </Link>

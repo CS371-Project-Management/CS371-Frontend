@@ -28,6 +28,7 @@ export interface QuizTypesResponse {
 }
 
 export interface ChoiceAnswer {
+    id : number;
     answer: string;
     result: boolean;
 }

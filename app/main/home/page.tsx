@@ -87,7 +87,8 @@ export default function HomePage() {
 
             <div className="m-10 ml-16">
                 <div className='flex flex-wrap pb-10 gap-y-4'>
-                    {classes?.map((cls, index) => (
+                    {classes?.map((cls, index) => {
+                        return cls.accessibility ? (
                         <div key={index}
                             className='flex justify-center w-120'
                             onClick={() => openModal(cls)}>
@@ -101,16 +102,17 @@ export default function HomePage() {
                                 />
                             </div>
                         </div>
-                    ))}
+                    ) : null})}
                 </div>
 
                 <div className='flex flex-wrap gap-6'>
-                    {classes?.map((cls, index) => (
+                    {classes?.map((cls, index) => {
+                        return cls.accessibility && (
                         <div key={index}
                             onClick={() => openModal(cls)}>
                             <Card image={"/images/image.jpg"} title={cls.title} description={cls.description}></Card>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </div>
 
