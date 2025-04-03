@@ -13,7 +13,7 @@ export class Course {
       this.classId = data.classId;
       this.title = data.title;
       this.description = data.description;
-      this.difficultyLevel = data.difficultyLevel;
+      this.difficultyLevel = data.difficulty_level;
       this.number = data.number;
     }
   

@@ -77,7 +77,8 @@ export class ClassService {
     
     static async joinPrivateClass(invite_code: string): Promise<void>{
         try{
-            await axiosInstance.post(`/classes/join-private`,{withCredentials: true});
+            const response = await axiosInstance.post(`/classes/join-private`,{withCredentials: true});
+            return response.data
 
         }catch{
             throw new Error('Failed to join class.')
@@ -87,7 +88,8 @@ export class ClassService {
     //X
     static async leaveClass(class_id: string): Promise<void>{
         try{
-            await axiosInstance.post(`/classes/leaveClass/${class_id}`,{withCredentials: true});
+            const response = await axiosInstance.post(`/classes/leaveClass/${class_id}`,{withCredentials: true});
+            return response.data
 
         }catch{
             throw new Error('Failed to leave class.')
@@ -97,7 +99,8 @@ export class ClassService {
     //success
     static async deleteClass(class_id: string): Promise<void> {
         try {
-            await axiosInstance.delete(`/classes/${class_id}`, { withCredentials: true });
+           const response = await axiosInstance.delete(`/classes/${class_id}`, { withCredentials: true });
+           return response.data
         } catch {
             throw new Error('Failed to delete class.');
         }

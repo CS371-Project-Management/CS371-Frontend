@@ -1,4 +1,5 @@
 export interface QuizTypesResponse {
+    fromResponse(quizData: QuizTypesResponse): any;
     id:string,
     course_id: string,
     number: number,
@@ -58,13 +59,4 @@ export interface QuizTypesOderingAnswer{
     order: number
 }
 
-
-
-// export interface CourseTypesCreate{
-//     classId: string;
-//     title:string;
-//     description: string;
-//     DifficultyLevel: string;
-//     number: number;
-// }
 
