@@ -3,45 +3,27 @@
 import Card from '@/components/Card';
 import NavbarClassroom from '@/components/modals/classroom/Navbar';
 import ModalCreateCourse from '@/components/modals/course/Create';
+import { Course } from '@/models/Course';
+import { CourseService } from '@/services/courseService';
 import { BookOpen, Code, Database, Palette } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const courses = [
-    {
-        title: 'UX/UI Design Bootcamp',
-        description: 'เรียนออกแบบ UX/UI ตั้งแต่พื้นฐานจนถึงขั้นสูง',
-        image: '/images/image.jpg',
-        icon: <Palette size={24} />,
-        path: '/main/my_classroom/courses/detail'
-    },
-    {
-        title: 'Data Analytics with Python',
-        description: 'วิเคราะห์ข้อมูลด้วย Python และเครื่องมือต่าง ๆ',
-        image: '/images/image.jpg',
-        icon: <Database size={24} />,
-        path: '/main/my_classroom/courses/lesson'
-    },
-    {
-        title: 'Fundamental Web Dev',
-        description: 'HTML5 และ CSS3 สำหรับมือใหม่',
-        image: '/images/image.jpg',
-        icon: <Code size={24} />,
-        path: '/main/my_classroom/courses/question'
-    },
-    {
-        title: 'Introduction to JavaScript',
-        description: 'พื้นฐานการเขียนโปรแกรมด้วย JavaScript',
-        image: '/images/image.jpg',
-        icon: <Code size={24} />,
-        path: '/main/my_classroom/courses/result'
-    },
-];
 
 export default function CoursePage() {
     const [isCreateCourse, setIsCreateCourse] = useState(false);
     const { classId } = useParams();
+    const [courses, setCourses] = useState<Course[]>([]);
+
+    useEffect(() => {
+        const getCourses = async () => {
+            const response = await CourseService.getCourseByClassId(classId);
+            setCourses(response)
+
+        }
+        getCourses();
+    }, [classId])
 
     return (
         <div className="min-h-screen bg-white">
@@ -66,10 +48,10 @@ export default function CoursePage() {
             ) : (
                 <div className="flex flex-wrap gap-6 ml-25">
                 {courses.map((course, index) => (
-                    <Link href={course.path} key={index}>
+                    <Link href={`/main/my_classroom/${classId}/courses/${course.id}/detail`} key={index}>
                     <div>
                         <Card
-                        image={course.image}
+                        image={"/images/image.jpg"}
                         title={course.title}
                         description={course.description}
                         />
@@ -82,6 +64,7 @@ export default function CoursePage() {
             <ModalCreateCourse
                 isOpen={isCreateCourse}
                 onClose={() => setIsCreateCourse(false)}
+                class_id = {classId}
             />
         </div>
     );

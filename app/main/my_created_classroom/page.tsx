@@ -7,7 +7,7 @@ import { User } from "@/models/User";
 import { ClassService } from "@/services/classServices";
 import { UserService } from "@/services/userService";
 import { BookOpen, Code, Database, Palette } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
