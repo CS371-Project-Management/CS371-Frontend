@@ -6,7 +6,7 @@ import { QuizTypesCreate, QuizTypesResponse } from "@/types/quizTypes";
 
 export class QuizService {
       
-    
+    //success
       static async createQuiz(quiz: QuizTypesCreate): Promise<any> {
         console.log("Quiz Type:", quiz);
         try {
@@ -20,20 +20,32 @@ export class QuizService {
         }
       }
 
-     
+     //success
       static async getAllQuizByCourseId(id: string): Promise<Quiz[]> {
         try {
-            const response = await axiosInstance.get<QuizTypesResponse[]>(`/quizzes/${id}`, { withCredentials: true });
-            return response.data.map(quizData => Quiz.fromResponse(quizData));
-        } catch (error:any) {
+            const response = await axiosInstance.get<{ quizzes: QuizTypesResponse[] }>(
+                `/quizzes/${id}`, 
+                { withCredentials: true }
+            );
+    
+            const quizzes = response.data.quizzes;
+    
+            if (!Array.isArray(quizzes)) {
+                throw new Error("Invalid response format: quizzes is not an array");
+            }
+    
+            return quizzes.map((quizData: QuizTypesResponse) => Quiz.fromResponse(quizData));
+    
+        } catch (error: any) {
             if (error.response) {
-                throw new Error(`Failed to fetch quiz: ${error.response.data.message || 'Unknown error'}`);
+                throw new Error(`Failed to fetch quiz: ${error.response.data || 'Unknown error'}`);
             } else {
-                console.error('Error123:', error.message);
+                console.error('Error:', error.message);
                 throw new Error(`Failed to fetch quiz: ${error.message || 'Unknown error'}`);
             }
         }
     }
+    
 
     //งง
     static async getCourseProgress(courseId: string, userId:string): Promise<any>{
@@ -45,11 +57,12 @@ export class QuizService {
         }
     }
 
-    static async deleteCourse(id: number): Promise<void>{
+    static async deleteQuiz(id: string): Promise<void>{
         try {
-            await axiosInstance.delete(`/coueses/${id}`, {withCredentials:true});
+            const response = await axiosInstance.delete(`/quizzes/${id}`, {withCredentials:true});
+            return response.data;
         }catch (error){
-            throw new Error('Failed to delete couese.')
+            throw new Error('Failed to delete quizzes.')
         }
     }
     

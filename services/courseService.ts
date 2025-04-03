@@ -94,7 +94,8 @@ export class CourseService {
     //X
     static async deleteCourse(id: string): Promise<void>{
         try {
-            await axiosInstance.delete(`/coueses/${id}`, {withCredentials:true});
+            const response = await axiosInstance.delete(`/coueses/${id}`, {withCredentials:true});
+            return response.data
         }catch (error){
             throw new Error('Failed to delete couese.')
         }
