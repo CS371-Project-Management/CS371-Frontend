@@ -1,7 +1,9 @@
 import axiosInstance from "@/lib/api";
 import { Course } from "@/models/Course";
+import { User } from "@/models/User";
 import { ClassTypesResponse } from "@/types/classTypes";
 import { CourseTypesCreate, CourseTypesResponse, CourseTypesUpdate } from "@/types/courseTypes";
+import { UserTypesResponse } from "@/types/userTypes";
 
 export class CourseService {
       
@@ -54,6 +56,20 @@ export class CourseService {
         }
     }
 
+    static async getUserByClassId(id:string): Promise<User[]>{
+        try {
+            const response = await axiosInstance.get<UserTypesResponse[]>(`/classes/${id}/users`, { withCredentials: true });
+            return response.data.map((userData: UserTypesResponse) => User.fromResponse(userData));
+        } catch (error:any) {
+            if (error.response) {
+                throw new Error(`Failed to fetch users: ${error.response.data.message || 'Unknown error'}`);
+            } else {
+                console.error('Error123:', error.message);
+                throw new Error(`Failed to fetch users: ${error.message || 'Unknown error'}`);
+            }
+        }
+    }
+
     //X
     static async updateCourse(id: string, course: Course): Promise<any> {
         try {
@@ -83,6 +99,8 @@ export class CourseService {
             throw new Error('Failed to delete couese.')
         }
     }
+
+
     
     
 }

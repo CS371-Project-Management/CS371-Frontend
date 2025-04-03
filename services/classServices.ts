@@ -11,8 +11,6 @@ export class ClassService {
         try {
           await axiosInstance.post("/classes", classroom, {withCredentials:true});
         } catch (error: any) {
-
-
             const errorMessage =
                 error.response?.data?.message || error.message || 'Failed to create class.';
             throw new Error(errorMessage);
