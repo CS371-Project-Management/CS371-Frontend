@@ -1,6 +1,6 @@
 export interface CourseTypesResponse {
     id:string,
-    classId: string,
+    class_id: string,
     title: string;
     description: string;
     difficulty_level: string;

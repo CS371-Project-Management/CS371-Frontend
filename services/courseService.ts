@@ -76,10 +76,10 @@ export class CourseService {
             const courseUpdate: CourseTypesUpdate = {
                 title: course.title,
                 description: course.description,
-                difficulty_level: course.difficultyLevel,
+                difficulty_level: course.difficulty_level,
                 number: course.number,
             };
-    
+            console.log(courseUpdate);
             const response = await axiosInstance.put<CourseTypesResponse>(
                 `/courses/${id}`, 
                 courseUpdate,       
