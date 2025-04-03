@@ -1,6 +1,6 @@
 export interface QuizTypesResponse {
     id:string,
-    courseId: string,
+    course_id: string,
     number: number,
     point: number,
     quizType: string,
@@ -9,13 +9,42 @@ export interface QuizTypesResponse {
   }
 
   export interface QuizTypesCreate {
-    courseId: string,
-    number: number,
-    point: number,
-    quizType: string,
-    title: string,
-    lesson: string,
+    course_id: string;
+    number: number;
+    point: number;
+    quiz_type: string;
+    title: string;
+    lesson: string;
+    choice_data?: CreateChoiceQuizData | null;
+    orderingData?: CreateOrderingQuizData | null;
+    missingWordData?: CreateMissingWordQuizData | null;
   }
+
+  export interface CreateChoiceQuizData {
+    question: string;
+    type: string;
+    answers: ChoiceAnswer[];
+}
+
+export interface ChoiceAnswer {
+    answer: string;
+    result: boolean;
+}
+
+export interface CreateOrderingQuizData {
+    question: string;
+    answers: OrderingAnswer[];
+}
+
+export interface OrderingAnswer {
+    answer: string;
+    order: number;
+}
+
+export interface CreateMissingWordQuizData {
+    question: string;
+    answer: string;
+}
 
 export interface QuizTypesOderingQuiz{
     quizId: string,

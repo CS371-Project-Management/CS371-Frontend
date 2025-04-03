@@ -8,8 +8,10 @@ export class QuizService {
       
     
       static async createQuiz(quiz: QuizTypesCreate): Promise<any> {
+        console.log("Quiz Type:", quiz);
         try {
           await axiosInstance.post("/quizzes", quiz);
+         
         } catch (error: any) {
           
           const errorMessage =
@@ -36,10 +38,10 @@ export class QuizService {
     //งง
     static async getCourseProgress(courseId: string, userId:string): Promise<any>{
         try{
-            const reponse = await axiosInstance.put<CourseTypesResponse>(`/courses/${id}`, course.toJSON(),{withCredentials:true});
+            const reponse = await axiosInstance.get<CourseTypesResponse>(`/users/${userId}/courses/${courseId}/progress`,{withCredentials:true});
             return Course.fromResponse(reponse.data);
         }catch(error){
-            throw new Error('Failed to update couese.');
+            throw new Error('Failed to get process.');
         }
     }
 

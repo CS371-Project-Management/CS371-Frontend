@@ -40,6 +40,20 @@ export class CourseService {
         }
     }
 
+    static async getCourseByCourseId(id: string): Promise<Course> {
+        try {
+            const response = await axiosInstance.get<CourseTypesResponse>(`/courses/${id}`, { withCredentials: true });
+            return Course.fromResponse(response.data)
+        } catch (error:any) {
+            if (error.response) {
+                throw new Error(`Failed to fetch course: ${error.response.data.message || 'Unknown error'}`);
+            } else {
+                console.error('Error123:', error.message);
+                throw new Error(`Failed to fetch course: ${error.message || 'Unknown error'}`);
+            }
+        }
+    }
+
     //X
     static async updateCourse(id: string, course: Course): Promise<any> {
         try {
