@@ -12,6 +12,8 @@ import ModalDeleteLesson from "@/components/modals/course/DeleteLesson";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { CourseService } from "@/services/courseService";
 import { Course } from "@/interfaces/course";
+import { QuizService } from "@/services/quizServices";
+import { Quiz } from "@/models/quiz/Quiz";
 
 const lessons = [
     { title: "Lesson 1", status: "completed" },
@@ -27,18 +29,36 @@ export default function DetailPage() {
     const [forSure, setForSure] = useState(false);
     const [calcFail, setCalcFail] = useState(false);
     const [course, setCourse] = useState<Course>()
+    const [quizzes, setQuizzes] = useState<Quiz[]>([])
     const { courseId } = useParams();
     const router = useRouter();
     const pathName = usePathname();
     const pathSegments = pathName.split("/");
-    pathSegments[pathSegments.length - 1] = ""; 
+    pathSegments[pathSegments.length - 1] = "";
+
     useEffect(() => {
         const getCourse = async () => {
-            const response = await CourseService.getCourseByCourseId(courseId);
-            setCourse(response);
+            try {
+            const courseResponse = await CourseService.getCourseByCourseId(courseId);
+            setCourse(courseResponse);
+            const quizResponse = await QuizService.getAllQuizByCourseId(courseId);
+            setQuizzes(quizResponse);
+            } catch(error) {
+                console.log(error)
+            }
         }
         getCourse();
     }, [])
+
+    const handleDeleteCourse = async () => {
+        try {
+            setIsDeleteLesson(true);
+            const response = await CourseService.deleteCourse(courseId);
+            console.log(response)
+        } catch(error) {
+            console.log(error)
+        }
+    }   
 
 
     return (
@@ -119,15 +139,15 @@ export default function DetailPage() {
 
 
             <div className="mt-6">
-                {lessons.length === 0 ? (
+                {quizzes.length === 0 ? (
                     <p className="text-center text-gray-500 text-lg">No quizzes found</p>
                 ) : (
-                    lessons.map((lesson, index) => (
+                    quizzes.map((quiz, index) => (
                         <div
                             key={index}
                             className="flex justify-between items-center bg-gray-100 p-4 px-5 rounded-lg shadow-sm mb-3"
                         >
-                            <p className="text-lg">{lesson.title}</p>
+                            <p className="text-lg">{quiz.title}</p>
                             <div className="flex gap-5">
                                 <button
                                     className="mt-5 h-fit bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
@@ -138,7 +158,7 @@ export default function DetailPage() {
 
                                 <button
                                     className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                                    onClick={() => setIsDeleteLesson(true)}
+                                    onClick={() => handleDeleteCourse()}
                                 >
                                     Delete
                                 </button>
@@ -157,6 +177,7 @@ export default function DetailPage() {
             <ModalDeleteCourse
                 isOpen={isDeleteCourse}
                 onClose={() => setIsDeleteCourse(false)}
+                course_id = {courseId}
             />
 
             <ModalDeleteLesson

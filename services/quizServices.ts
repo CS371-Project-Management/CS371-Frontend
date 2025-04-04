@@ -29,7 +29,7 @@ export class QuizService {
             );
     
             const quizzes = response.data.quizzes;
-    
+            console.log(quizzes)
             if (!Array.isArray(quizzes)) {
                 throw new Error("Invalid response format: quizzes is not an array");
             }

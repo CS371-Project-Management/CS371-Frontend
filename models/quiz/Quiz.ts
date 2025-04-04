@@ -2,19 +2,19 @@ import { QuizTypesResponse } from "@/types/quizTypes";
 
 export class Quiz {
     id:string;
-    courseId: string;
+    course_id: string;
     number: number;
     point: number;
-    quizType: string;
+    quiz_type: string;
     title: string;
     lesson: string;
   
     constructor(data: QuizTypesResponse) {
      this.id = data.id;
-      this.courseId = data.courseId;
+      this.course_id = data.course_id;
       this.number = data.number;
       this.point = data.point;
-      this.quizType = data.quizType;
+      this.quiz_type = data.quiz_type;
       this.title = data.title;
       this.lesson = data.lesson;
     }
@@ -22,10 +22,10 @@ export class Quiz {
     toJSON() {
         return {
           id: this.id,
-          courseId: this.courseId,
+          courseId: this.course_id,
           number: this.number,
           point: this.point,
-          quizType: this.quizType,
+          quizType: this.quiz_type,
           title: this.title,
           lesson: this.lesson,
         };
