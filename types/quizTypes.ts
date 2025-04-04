@@ -4,7 +4,7 @@ export interface QuizTypesResponse {
     course_id: string,
     number: number,
     point: number,
-    quizType: string,
+    quiz_type: string,
     title: string,
     lesson: string,
   }
