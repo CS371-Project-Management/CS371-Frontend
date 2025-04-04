@@ -38,13 +38,27 @@ export default function DetailPage() {
 
     useEffect(() => {
         const getCourse = async () => {
+            try {
             const courseResponse = await CourseService.getCourseByCourseId(courseId);
-            const quizResponse = await QuizService.getAllQuizByCourseId(courseId);
             setCourse(courseResponse);
+            const quizResponse = await QuizService.getAllQuizByCourseId(courseId);
             setQuizzes(quizResponse);
+            } catch(error) {
+                console.log(error)
+            }
         }
         getCourse();
     }, [])
+
+    const handleDeleteCourse = async () => {
+        try {
+            setIsDeleteLesson(true);
+            const response = await CourseService.deleteCourse(courseId);
+            console.log(response)
+        } catch(error) {
+            console.log(error)
+        }
+    }   
 
 
     return (
@@ -144,7 +158,7 @@ export default function DetailPage() {
 
                                 <button
                                     className="mt-5 h-fit bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md"
-                                    onClick={() => setIsDeleteLesson(true)}
+                                    onClick={() => handleDeleteCourse()}
                                 >
                                     Delete
                                 </button>
@@ -163,6 +177,7 @@ export default function DetailPage() {
             <ModalDeleteCourse
                 isOpen={isDeleteCourse}
                 onClose={() => setIsDeleteCourse(false)}
+                course_id = {courseId}
             />
 
             <ModalDeleteLesson
