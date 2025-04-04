@@ -1,9 +1,15 @@
 "use client"
 
-import { useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import Head from 'next/head';
 import QuizContent from '@/components/QuizContent';
-import QuizMaker from '@/components/QuizMaker';
+import QuizMaker, { QuizType } from '@/components/QuizMaker';
+import { ChoiceAnswer, CreateChoiceQuizData, CreateMissingWordQuizData, CreateOrderingQuizData, OrderingAnswer, QuizTypesCreate } from '@/types/quizTypes';
+import { q } from 'framer-motion/client';
+import { useParams } from 'next/navigation';
+import { QuizService } from '@/services/quizServices';
+import ModalReportSuccess from '@/components/modals/report/ReportSuccess';
+import ModalReportFail from '@/components/modals/report/ReportFail';
 
 interface Quiz {
   id: number;
@@ -24,6 +30,21 @@ export default function CreateQuiz() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  const [singleChoiceAnswer, setSingleChoiceAnswer] = useState<ChoiceAnswer[]>([]);
+  const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState<ChoiceAnswer[]>([]);
+  const [orderingAnswer, setOrderingAnswer] = useState<OrderingAnswer[]>([]);
+
+  const [missingWordAnswer, setMissingWordAnswer] = useState("");
+
+  const [quizType, setQuizType] = useState<QuizType>('single');
+  const [question, setQuestion] = useState<string>('');
+  const [number, setNumber] = useState<number>(0);
+  const [point, setPoint] = useState<number>(0);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showFail, setShowFail] = useState(false);
+
+  const { courseId } = useParams();
+
   const addContent = () => {
     setView('content');
   };
@@ -32,22 +53,73 @@ export default function CreateQuiz() {
     setView('quiz');
   };
 
-  const saveQuiz = () => {
-    setView('main');
-  };
+  const saveQuiz = async () => {
+    let req: QuizTypesCreate;
 
-  const deleteQuiz = (id: number) => {
-    if (quizzes.length > 1) {
-      const newQuizzes = quizzes.filter(quiz => quiz.id !== id);
-      setQuizzes(newQuizzes);
-      setSelectedQuiz(newQuizzes[0].id);
-    } else {
-      // Reset the quiz if it's the last one
-      const resetQuiz = { id: 1, title: 'Quiz 1', content: null, questions: [] };
-      setQuizzes([resetQuiz]);
-      setSelectedQuiz(1);
+    if (title === "" || description === "") {
+      setShowFail(true);
+      return;
     }
-    setView('main');
+    const baseQuizData = {
+      course_id: courseId as string,
+      number: number,
+      point: point,
+      title: title,
+      lesson: description
+    };
+
+    // Build request based on quiz type
+    if (quizType === "single" || quizType === "multiple") {
+      const qstn: CreateChoiceQuizData = {
+        question: question,
+        type: quizType,
+        answers: quizType === "single" ? singleChoiceAnswer : multipleChoiceAnswer
+      };
+
+      req = {
+        ...baseQuizData,
+        quiz_type: "choice",
+        choice_data: qstn
+      };
+    } else if (quizType === "ordering") {
+      const qstn: CreateOrderingQuizData = {
+        question: question,
+        answers: orderingAnswer.map((item, index) => ({
+          ...item,
+          order: index + 1, // Assign order based on index (1-based indexing)
+        })),
+      };
+
+      req = {
+        ...baseQuizData,
+        quiz_type: "ordering",
+        ordering_data: qstn,
+      };
+    } else if (quizType === "missing") {
+      const qstn: CreateMissingWordQuizData = {
+        question: question,
+        answer: missingWordAnswer,
+      };
+
+      req = {
+        ...baseQuizData,
+        quiz_type: "missing_words",
+        missing_word_data: qstn
+      };
+    } else {
+      throw new Error(`Unsupported quiz type: ${quizType}`);
+    }
+
+    // Make the API call with the properly built request
+    try {
+      const response = await QuizService.createQuiz(req);
+      console.log(req)
+      setShowSuccess(true);
+      console.log();
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const addNewQuiz = () => {
@@ -68,41 +140,31 @@ export default function CreateQuiz() {
       </Head>
 
       <div className="flex w-full">
-        <div className="w-56 bg-gray-900 h-screen">
+        <div className="w-xs bg-gray-900 h-screen">
           <div className="bg-blue-500 p-4 text-white font-semibold">
-            {currentQuiz.title}
+            Create Quiz
           </div>
           <div className="p-4 flex flex-col gap-2">
-            <button 
-              onClick={addContent} 
+            <button
+              onClick={addContent}
               className="bg-gray-600 text-white p-2 rounded-md w-full"
             >
               Add Content
             </button>
-            <button 
-              onClick={addQuiz} 
+            <button
+              onClick={addQuiz}
               className="bg-gray-600 text-white p-2 rounded-md w-full"
             >
               Add Quiz
             </button>
-            <button 
-              onClick={saveQuiz} 
+            <button
+              onClick={saveQuiz}
               className="bg-green-500 text-white p-2 rounded-md w-full"
             >
               Save
             </button>
           </div>
-          <div className="absolute bottom-0 left-0 w-56 p-4">
-            <button 
-              onClick={() => deleteQuiz(currentQuiz.id)} 
-              className="bg-yellow-500 text-white p-2 rounded-md w-full flex items-center justify-center"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-              Delete Quiz
-            </button>
-          </div>
+
         </div>
 
         <div className="flex-1">
@@ -111,20 +173,20 @@ export default function CreateQuiz() {
               <h2 className="text-2xl font-bold mb-4">Quiz Builder</h2>
               <p className="mb-4">Select an option from the sidebar to start building your quiz.</p>
               <div className="flex gap-4 justify-center">
-                <button 
-                  onClick={addContent} 
+                <button
+                  onClick={addContent}
                   className="bg-blue-500 text-white p-3 rounded-md"
                 >
                   Add Content
                 </button>
-                <button 
-                  onClick={addQuiz} 
+                <button
+                  onClick={addQuiz}
                   className="bg-green-500 text-white p-3 rounded-md"
                 >
                   Add Quiz Question
                 </button>
-                <button 
-                  onClick={addNewQuiz} 
+                <button
+                  onClick={addNewQuiz}
                   className="bg-purple-500 text-white p-3 rounded-md"
                 >
                   Create New Quiz
@@ -132,16 +194,53 @@ export default function CreateQuiz() {
               </div>
             </div>
           )}
-          
+
           {view === 'content' && (
-            <QuizContent title={title} description={description} setTitle={setTitle} setDescription={setDescription}/>
+            <QuizContent
+              title={title}
+              description={description}
+              setTitle={setTitle}
+              setDescription={setDescription}
+              number={number}
+              setNumber={setNumber}
+              point={point}
+              setPoint={setPoint} />
           )}
-          
+
           {view === 'quiz' && (
-            <QuizMaker />
+            <QuizMaker
+              singleChoiceAnswer={singleChoiceAnswer}
+              multipleChoiceAnswer={multipleChoiceAnswer}
+              orderingAnswer={orderingAnswer}
+              missingWordAnswer={missingWordAnswer}
+              setSingleChoiceAnswer={setSingleChoiceAnswer}
+              setMultipleChoiceAnswer={setMultipleChoiceAnswer}
+              setOrderingAnswer={setOrderingAnswer}
+              setMissingWordAnswer={setMissingWordAnswer}
+              question={question}
+              quizType={quizType}
+              setQuestion={setQuestion}
+              setQuizType={setQuizType}
+            />
           )}
         </div>
       </div>
+
+      <ModalReportSuccess
+        isOpen={showSuccess}
+        onClose={() => {
+          setShowSuccess(false);
+        }}
+        title="Quiz created."
+        press="OK"
+      />
+
+      <ModalReportFail
+        isOpen={showFail}
+        onClose={() => setShowFail(false)}
+        title="Please fill all required fields."
+        press="OK"
+      />
     </div>
   );
 }

@@ -7,10 +7,16 @@ type Props = {
 }
 
 export default function SingleChoice({ answers, setAnswers }: Props) {
-  let id = 0;
+
   const addAnswer = () => {
-    setAnswers([...answers, { id: id, answer: '', result: false }]);
-    id += 1;
+    setAnswers((prevAnswers) => [
+      ...prevAnswers,
+      { 
+        id: prevAnswers.length > 0 ? prevAnswers[prevAnswers.length - 1].id + 1 : 1, 
+        answer: '', 
+        result: false 
+      },
+    ]);
   };
 
   const updateAnswer = (id: number, text: string) => {

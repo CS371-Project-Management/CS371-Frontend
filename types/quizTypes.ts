@@ -17,8 +17,8 @@ export interface QuizTypesResponse {
     title: string;
     lesson: string;
     choice_data?: CreateChoiceQuizData | null;
-    orderingData?: CreateOrderingQuizData | null;
-    missingWordData?: CreateMissingWordQuizData | null;
+    ordering_data?: CreateOrderingQuizData | null;
+    missing_word_data?: CreateMissingWordQuizData | null;
   }
 
   export interface CreateChoiceQuizData {
@@ -39,6 +39,7 @@ export interface CreateOrderingQuizData {
 }
 
 export interface OrderingAnswer {
+    id : number;
     answer: string;
     order: number;
 }

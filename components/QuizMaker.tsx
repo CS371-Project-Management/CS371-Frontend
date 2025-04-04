@@ -3,26 +3,41 @@ import SingleChoice from '@/components/quiz-types/SingleChoice';
 import MultipleChoice from '@/components/quiz-types/MultipleChoice';
 import Ordering from '@/components/quiz-types/Ordering';
 import MissingWords from '@/components/quiz-types/MissingWords';
-import { ChoiceAnswer, CreateChoiceQuizData, CreateMissingWordQuizData, CreateOrderingQuizData } from '@/types/quizTypes';
+import { ChoiceAnswer, CreateChoiceQuizData, CreateMissingWordQuizData, CreateOrderingQuizData, OrderingAnswer } from '@/types/quizTypes';
 
 export type QuizType = 'single' | 'multiple' | 'ordering' | 'missing';
 
-export default function QuizMaker() {
-    const [quizType, setQuizType] = useState<QuizType>('single');
-    const [question, setQuestion] = useState<string>('');
-    const [choiceAnswer, setChoiceAnswer] = useState<ChoiceAnswer[]>([]);
-    const [orderingAnswer, setOrderingAnswer] = useState<ChoiceAnswer[]>([]);
-    const [missingWordAnswer, setMissingWordAnswer] = useState<ChoiceAnswer[]>([]);
+type Props = {
+    singleChoiceAnswer : ChoiceAnswer[];
+    multipleChoiceAnswer : ChoiceAnswer[];
+    orderingAnswer : OrderingAnswer[];
+    missingWordAnswer : string;
+    setSingleChoiceAnswer: React.Dispatch<React.SetStateAction<ChoiceAnswer[]>>;
+    setMultipleChoiceAnswer: React.Dispatch<React.SetStateAction<ChoiceAnswer[]>>;
+    setOrderingAnswer : React.Dispatch<React.SetStateAction<OrderingAnswer[]>>;
+    setMissingWordAnswer : React.Dispatch<React.SetStateAction<string>>;
+    quizType : QuizType;
+    question : string;
+    setQuizType : React.Dispatch<React.SetStateAction<QuizType>>;
+    setQuestion : React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function QuizMaker({singleChoiceAnswer, multipleChoiceAnswer, orderingAnswer, missingWordAnswer, setSingleChoiceAnswer, setMultipleChoiceAnswer, setOrderingAnswer, setMissingWordAnswer, quizType, question, setQuizType ,setQuestion} : Props) {
+   
+    // const [missingWordAnswer, setMissingWordAnswer] = useState<CreateMissingWordQuizData>();
 
     const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuestion(e.target.value);
     };
 
     const handleTypeChange = (type: QuizType) => {
-        if (question && quizType !== type) {
+        if (quizType !== type) {
             if (confirm('Changing question type will reset your data. Continue?')) {
                 setQuizType(type);
-                setQuestion('');
+                setSingleChoiceAnswer([]);
+                setMultipleChoiceAnswer([]);
+                setOrderingAnswer([]);
+                setMissingWordAnswer("")
             }
         } else {
             setQuizType(type);
@@ -68,11 +83,10 @@ export default function QuizMaker() {
                 />
             </div>
 
-
-            {quizType === 'single' && <SingleChoice answers={choiceAnswer} setAnswers={setChoiceAnswer}/>}
-            {quizType === 'multiple' && <MultipleChoice />}
-            {quizType === 'ordering' && <Ordering />}
-            {quizType === 'missing' && <MissingWords />}
+            {quizType === 'single' && <SingleChoice answers={singleChoiceAnswer} setAnswers={setSingleChoiceAnswer}/>}
+            {quizType === 'multiple' && <MultipleChoice answers={multipleChoiceAnswer} setAnswers={setMultipleChoiceAnswer}/>}
+            {quizType === 'ordering' && <Ordering answers={orderingAnswer} setAnswers={setOrderingAnswer}/>}
+            {quizType === 'missing' && <MissingWords answers={missingWordAnswer} setAnswers={setMissingWordAnswer}/>}
 
             <div className="mt-6">
                 <h3 className="text-lg font-medium text-gray-700 mb-2">Answer Description</h3>
